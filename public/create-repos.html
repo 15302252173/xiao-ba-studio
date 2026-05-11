@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>一键创建 GitHub 仓库</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:500px;margin:60px auto;padding:20px;background:#0d1117;color:#c9d1d9}
+h1{color:#58a6ff}.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;margin:12px 0}
+.status{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:6px;margin:8px 0;font-size:13px}
+.pending{background:rgba(210,153,34,0.12);border:1px solid #d29922;color:#d29922}
+.done{background:rgba(35,134,54,0.12);border:1px solid #238636;color:#3fb950}
+.step{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;margin:12px 0}
+.step h3{margin:0 0 8px 0;color:#c9d1d9}
+input{width:100%;padding:8px 12px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#c9d1d9;font-size:14px;box-sizing:border-box}
+input:focus{outline:none;border-color:#58a6ff}
+.ball{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ball-pending{background:#d29922}.ball-done{background:#3fb950}
+</style>
+</head>
+<body>
+<h1>🚀 创建 GitHub 仓库</h1>
+
+<div class="step">
+  <h3>Step 1: 确认 GitHub 用户名</h3>
+  <p style="color:#8b949e;font-size:13px;margin:4px 0 12px 0">打开 GitHub 主页，复制你的用户名：</p>
+  <a href="https://github.com" target="_blank" style="color:#58a6ff;font-size:13px">→ 打开 GitHub.com</a>
+  <br><br>
+  <input id="username" placeholder="GitHub 用户名，如 L7384" />
+</div>
+
+<div class="step">
+  <h3>Step 2: 创建仓库</h3>
+  <p style="color:#8b949e;font-size:13px;margin:4px 0 8px 0">输入用户名后点下方按钮，在新标签页分别创建（已登录状态，点一下绿色按钮就完事）：</p>
+  <button id="btn1" onclick="openRepo('xiao-ba-studio','牛二办公室 - AI Agent 控制中心')" style="background:#238636;color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:14px;width:100%;margin-bottom:8px" disabled>
+    📦 创建 xiao-ba-studio（小八工作室）
+  </button>
+  <button id="btn2" onclick="openRepo('super-skills','超级skills - AI Agent 技能包和上下文持久化方案')" style="background:#238636;color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:14px;width:100%" disabled>
+    🧠 创建 super-skills（超级skills）
+  </button>
+</div>
+
+<div class="step">
+  <h3>Step 3: 确认并推送</h3>
+  <p style="color:#8b949e;font-size:13px;margin:4px 0 8px 0">创建完成后，告诉我两个仓库的 URL，我来推送代码。</p>
+  <div id="urls" style="font-size:13px;color:#8b949e"></div>
+</div>
+
+<script>
+const usernameInput = document.getElementById('username');
+const btn1 = document.getElementById('btn1');
+const btn2 = document.getElementById('btn2');
+const urlsDiv = document.getElementById('urls');
+
+usernameInput.addEventListener('input', () => {
+  const u = usernameInput.value.trim();
+  btn1.disabled = !u;
+  btn2.disabled = !u;
+  if (u) {
+    urlsDiv.innerHTML = `<p>仓库地址（创建后显示）：</p>
+      <p><code>https://github.com/${u}/xiao-ba-studio.git</code></p>
+      <p><code>https://github.com/${u}/super-skills.git</code></p>`;
+  }
+});
+
+function openRepo(name, desc) {
+  const u = usernameInput.value.trim();
+  if (!u) return;
+  const url = `https://github.com/new?name=${encodeURIComponent(name)}&description=${encodeURIComponent(desc)}`;
+  window.open(url, '_blank');
+}
+</script>
+</body>
+</html>

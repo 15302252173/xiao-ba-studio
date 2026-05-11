@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>创建 GitHub Token</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:500px;margin:60px auto;padding:20px;background:#0d1117;color:#c9d1d9}
+h1{color:#58a6ff}.step{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px;margin:16px 0}
+input{width:100%;padding:10px 14px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#c9d1d9;font-size:14px;box-sizing:border-box;font-family:monospace}
+input:focus{outline:none;border-color:#58a6ff}
+button{background:#238636;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:14px;width:100%;margin-top:8px}
+button:hover{background:#2ea043}
+button:disabled{opacity:0.5}.ok{color:#3fb950}.hint{color:#8b949e;font-size:13px;margin:8px 0}
+a{color:#58a6ff}
+#status{padding:10px;border-radius:6px;margin:12px 0;font-size:13px;display:none}
+#status.success{display:block;background:rgba(35,134,54,0.15);border:1px solid #238636;color:#3fb950}
+#status.error{display:block;background:rgba(248,81,73,0.15);border:1px solid #f85149;color:#f85149}
+</style>
+</head>
+<body>
+<h1>🔑 创建 GitHub Token</h1>
+
+<div class="step">
+  <h3>Step 1: 打开 Token 创建页面</h3>
+  <p class="hint">点击下方按钮打开 GitHub。名称和权限已自动填入，拉到页面底部点「Generate token」。</p>
+  <button onclick="openTokenPage()" style="background:#1f6feb">📋 打开 GitHub Token 创建页</button>
+</div>
+
+<div class="step">
+  <h3>Step 2: 粘贴 Token</h3>
+  <p class="hint">生成后复制 token（以 <code>ghp_</code> 或 <code>github_pat_</code> 开头），粘贴到下方：</p>
+  <input id="tokenInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
+  <button id="saveBtn" onclick="saveToken()">💾 保存并推送</button>
+  <div id="status"></div>
+</div>
+
+<script>
+function openTokenPage() {
+  window.open('https://github.com/settings/tokens/new?description=niu-er-push&scopes=repo', '_blank');
+}
+
+async function saveToken() {
+  const token = document.getElementById('tokenInput').value.trim();
+  if (!token || (!token.startsWith('ghp_') && !token.startsWith('github_pat_'))) {
+    document.getElementById('status').className = 'error';
+    document.getElementById('status').textContent = '❌ Token 格式不对，应以 ghp_ 或 github_pat_ 开头';
+    return;
+  }
+  document.getElementById('status').className = 'success';
+  document.getElementById('status').textContent = '✅ Token 已保存！正在推送代码...';
+  try {
+    const res = await fetch('/api/auth/github-token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token })
+    });
+    if (res.ok) {
+      document.getElementById('status').textContent = '✅ Token 已保存，小牛正在推送代码到 GitHub...';
+    }
+  } catch {
+    document.getElementById('status').textContent = '⚠️ Token 已复制，请手动粘贴到命令行窗口';
+  }
+}
+</script>
+</body>
+</html>
