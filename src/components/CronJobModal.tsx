@@ -7,7 +7,7 @@ import type { CronJob } from "./CronJobCard";
 
 interface CronJobModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  on关闭: () => void;
   onSave: (job: Partial<CronJob>) => void;
   editingJob?: CronJob | null;
 }
@@ -76,7 +76,7 @@ function buildCron(mode: FrequencyMode, opts: Record<string, number | number[]>)
   }
 }
 
-export function CronJobModal({ isOpen, onClose, onSave, editingJob }: CronJobModalProps) {
+export function CronJobModal({ isOpen, on关闭, onSave, editingJob }: CronJobModalProps) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [schedule, setSchedule] = useState("0 9 * * *");
@@ -148,7 +148,7 @@ export function CronJobModal({ isOpen, onClose, onSave, editingJob }: CronJobMod
         timezone,
         enabled: editingJob?.enabled ?? true,
       });
-      onClose();
+      on关闭();
     } finally {
       setIsSaving(false);
     }
@@ -166,7 +166,7 @@ export function CronJobModal({ isOpen, onClose, onSave, editingJob }: CronJobMod
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={on关闭} />
 
       <div className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-2xl shadow-2xl mx-4"
         style={{ backgroundColor: "var(--card)", border: "1px solid var(--border)" }}>
@@ -177,7 +177,7 @@ export function CronJobModal({ isOpen, onClose, onSave, editingJob }: CronJobMod
           <h2 className="text-xl font-semibold" style={{ color: "var(--text-primary)" }}>
             {editingJob ? "✏️ Edit Cron Job" : "➕ Create Cron Job"}
           </h2>
-          <button onClick={onClose} className="p-2 rounded-lg transition-colors"
+          <button onClick={on关闭} className="p-2 rounded-lg transition-colors"
             style={{ color: "var(--text-muted)", background: "none", border: "none", cursor: "pointer" }}>
             <X className="w-5 h-5" />
           </button>
@@ -523,7 +523,7 @@ export function CronJobModal({ isOpen, onClose, onSave, editingJob }: CronJobMod
           <div className="flex items-center justify-end gap-3 pt-4" style={{ borderTop: "1px solid var(--border)" }}>
             <button
               type="button"
-              onClick={onClose}
+              onClick={on关闭}
               style={{ padding: "0.5rem 1.25rem", borderRadius: "0.5rem", background: "none", border: "none", cursor: "pointer", color: "var(--text-muted)" }}
             >
               Cancel

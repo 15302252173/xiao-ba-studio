@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 const OPENCLAW_DIR = process.env.OPENCLAW_DIR || join(homedir(), ".openclaw");
 
 interface AgentState {
-  isActive: boolean;
+  is活跃: boolean;
   currentTask: string;
   lastSeen: number;
   status: "working" | "idle" | "sleeping";
@@ -81,7 +81,7 @@ function getAgentStatusFromSessions(agentId: string): AgentState {
     }
 
     if (latestMtime === 0) {
-      return { isActive: false, currentTask: "zzZ...", lastSeen: 0, status: "sleeping" };
+      return { is活跃: false, currentTask: "zzZ...", lastSeen: 0, status: "sleeping" };
     }
 
     const secsAgo = (Date.now() - latestMtime) / 1000;
@@ -94,21 +94,21 @@ function getAgentStatusFromSessions(agentId: string): AgentState {
     prevSizes[cacheKey] = { size: latestSize, ts: Date.now() };
 
     if (hasLock || isGrowing) {
-      return { isActive: true, currentTask: "Working...", lastSeen: latestMtime, status: "working" };
+      return { is活跃: true, currentTask: "Working...", lastSeen: latestMtime, status: "working" };
     }
     if (secsAgo < 120) {
       const ended = isSessionEnded(latestPath);
       if (!ended) {
-        return { isActive: true, currentTask: "Working...", lastSeen: latestMtime, status: "working" };
+        return { is活跃: true, currentTask: "Working...", lastSeen: latestMtime, status: "working" };
       }
-      return { isActive: false, currentTask: "Standing by", lastSeen: latestMtime, status: "idle" };
+      return { is活跃: false, currentTask: "Standing by", lastSeen: latestMtime, status: "idle" };
     }
     if (secsAgo < 1800) {
-      return { isActive: false, currentTask: "Standing by", lastSeen: latestMtime, status: "idle" };
+      return { is活跃: false, currentTask: "Standing by", lastSeen: latestMtime, status: "idle" };
     }
-    return { isActive: false, currentTask: "zzZ...", lastSeen: latestMtime, status: "sleeping" };
+    return { is活跃: false, currentTask: "zzZ...", lastSeen: latestMtime, status: "sleeping" };
   } catch {
-    return { isActive: false, currentTask: "zzZ...", lastSeen: 0, status: "sleeping" };
+    return { is活跃: false, currentTask: "zzZ...", lastSeen: 0, status: "sleeping" };
   }
 }
 
@@ -187,7 +187,12 @@ export async function GET() {
     const configPath = join(OPENCLAW_DIR, "openclaw.json");
     const config = JSON.parse(readFileSync(configPath, "utf-8"));
 
-    const agents = config.agents.list.map((agent: any) => {
+    const agentList = config.agents?.list;
+    if (!agentList || !Array.isArray(agentList)) {
+      return NextResponse.json({ agents: [], timestamp: Date.now() });
+    }
+
+    const agents = agentList.map((agent: any) => {
       const state = getAgentStatusFromSessions(agent.id);
       const stats = getAgentSessionStats(agent.id);
 
@@ -203,7 +208,7 @@ export async function GET() {
 
       // Get task hint from latest session if active
       let taskHint: string | null = null;
-      if (state.isActive) {
+      if (state.is活跃) {
         const sessionsDir = join(OPENCLAW_DIR, "agents", agent.id, "sessions");
         const files = readdirSync(sessionsDir)
           .filter((f: string) => f.endsWith(".jsonl"))
@@ -219,7 +224,7 @@ export async function GET() {
         name: agent.name || agent.id,
         model,
         currentTask: taskHint || state.currentTask,
-        isActive: state.isActive,
+        is活跃: state.is活跃,
         status: state.status,
         lastSeen: state.lastSeen,
         sessionCount: stats.sessionCount,

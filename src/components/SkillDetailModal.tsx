@@ -19,19 +19,19 @@ interface Skill {
 
 interface SkillDetailModalProps {
   skill: Skill;
-  onClose: () => void;
+  on关闭: () => void;
 }
 
-export function SkillDetailModal({ skill, onClose }: SkillDetailModalProps) {
-  const [activeTab, setActiveTab] = useState<"readme" | "files">("readme");
+export function SkillDetailModal({ skill, on关闭 }: SkillDetailModalProps) {
+  const [activeTab, set活跃Tab] = useState<"readme" | "files">("readme");
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") on关闭();
     };
     window.addEventListener("keydown", handleEscape);
     return () => window.removeEventListener("keydown", handleEscape);
-  }, [onClose]);
+  }, [on关闭]);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -57,7 +57,7 @@ export function SkillDetailModal({ skill, onClose }: SkillDetailModalProps) {
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ backgroundColor: "rgba(0, 0, 0, 0.7)", backdropFilter: "blur(4px)" }}
-      onClick={onClose}
+      onClick={on关闭}
     >
       <div
         className="rounded-2xl w-full max-w-4xl max-h-[85vh] overflow-hidden flex flex-col"
@@ -115,7 +115,7 @@ export function SkillDetailModal({ skill, onClose }: SkillDetailModalProps) {
             </div>
           </div>
           <button
-            onClick={onClose}
+            onClick={on关闭}
             className="p-2 rounded-lg transition-colors"
             style={{ color: "var(--text-secondary)" }}
           >
@@ -145,7 +145,7 @@ export function SkillDetailModal({ skill, onClose }: SkillDetailModalProps) {
         {/* Tabs */}
         <div className="flex" style={{ borderBottom: "1px solid var(--border)" }}>
           <button
-            onClick={() => setActiveTab("readme")}
+            onClick={() => set活跃Tab("readme")}
             className="px-6 py-3 text-sm font-medium transition-colors"
             style={{
               color: activeTab === "readme" ? "var(--accent)" : "var(--text-secondary)",
@@ -155,7 +155,7 @@ export function SkillDetailModal({ skill, onClose }: SkillDetailModalProps) {
             SKILL.md
           </button>
           <button
-            onClick={() => setActiveTab("files")}
+            onClick={() => set活跃Tab("files")}
             className="px-6 py-3 text-sm font-medium transition-colors"
             style={{
               color: activeTab === "files" ? "var(--accent)" : "var(--text-secondary)",

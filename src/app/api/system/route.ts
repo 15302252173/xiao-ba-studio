@@ -50,13 +50,13 @@ function getIntegrationStatus() {
   const integrations = [];
 
   // Telegram — read from openclaw.json (channels.telegram)
-  let telegramEnabled = false;
+  let telegram已启用 = false;
   let telegramAccounts = 0;
   try {
     const openclawConfigPath = path.join(os.homedir(), '.openclaw', 'openclaw.json');
     const openclawConfig = JSON.parse(fs.readFileSync(openclawConfigPath, 'utf-8'));
     const telegramConfig = openclawConfig?.channels?.telegram;
-    telegramEnabled = !!(telegramConfig?.enabled);
+    telegram已启用 = !!(telegramConfig?.enabled);
     if (telegramConfig?.accounts) {
       telegramAccounts = Object.keys(telegramConfig.accounts).length;
     }
@@ -64,10 +64,10 @@ function getIntegrationStatus() {
   integrations.push({
     id: 'telegram',
     name: 'Telegram',
-    status: telegramEnabled ? 'connected' : 'disconnected',
+    status: telegram已启用 ? 'connected' : 'disconnected',
     icon: 'MessageCircle',
-    lastActivity: telegramEnabled ? new Date().toISOString() : null,
-    detail: telegramEnabled ? `${telegramAccounts} bots configured` : null,
+    lastActivity: telegram已启用 ? new Date().toISOString() : null,
+    detail: telegram已启用 ? `${telegramAccounts} bots configured` : null,
   });
 
   // Twitter (bird CLI) - check TOOLS.md for configuration

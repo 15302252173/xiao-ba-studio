@@ -301,13 +301,13 @@ export default function CalendarPage() {
       } else {
         setEvents([]);
         setTodayStr("");
-        setCalendarError(getErrorMessage(calendarPayload, "Unable to fetch calendar events"));
+        setCalendarError(getErrorMessage(calendarPayload, "无法获取 calendar events"));
       }
 
       if (taskRes.ok) {
         setTasks(normalizeTasksData(taskPayload));
       } else {
-        setTasksError(getErrorMessage(taskPayload, "Unable to fetch Google Tasks"));
+        setTasksError(getErrorMessage(taskPayload, "无法获取 Google Tasks"));
         setTasks((current) => current ?? { tasks: [], pending: 0, completed: 0 });
       }
     } catch (error) {
@@ -500,10 +500,10 @@ export default function CalendarPage() {
             className="text-2xl md:text-3xl font-bold"
             style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)", letterSpacing: "-1px" }}
           >
-            📅 Calendar
+            📅 日历
           </h1>
           <p className="text-xs mt-1" style={{ color: "var(--text-muted)" }}>
-            Google Calendar · Google Tasks
+            Google 日历 · Google 任务
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -708,7 +708,7 @@ export default function CalendarPage() {
           </div>
           {tasks && tasks.configured !== false && (
             <span className="text-xs" style={{ color: "var(--text-muted)" }}>
-              Pending {tasks.pending} / Total {tasks.tasks.length}
+              Pending {tasks.pending} / 总计 {tasks.tasks.length}
             </span>
           )}
         </div>
@@ -720,7 +720,7 @@ export default function CalendarPage() {
           )}
 
           {loading ? (
-            <p style={{ color: "var(--text-muted)" }}>Loading...</p>
+            <p style={{ color: "var(--text-muted)" }}>加载中...</p>
           ) : tasks && tasks.configured === false ? (
             <p style={{ color: "var(--text-muted)", fontSize: "14px" }}>
               Google Tasks integration available. Configure <code style={{ fontSize: "13px", padding: "1px 4px", borderRadius: "4px", backgroundColor: "var(--surface-elevated)" }}>GOOGLE_TASKS_SCRIPT</code> in <code style={{ fontSize: "13px", padding: "1px 4px", borderRadius: "4px", backgroundColor: "var(--surface-elevated)" }}>.env.local</code> to connect.

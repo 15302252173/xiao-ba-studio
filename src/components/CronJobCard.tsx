@@ -378,7 +378,7 @@ export function CronJobCard({
           }}
         >
           {job.enabled ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
-          {job.enabled ? "Enabled" : "Paused"}
+          {job.enabled ? "已启用" : "Paused"}
         </button>
       </div>
 

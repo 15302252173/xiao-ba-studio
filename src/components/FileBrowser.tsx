@@ -96,10 +96,10 @@ interface EditorModalProps {
   workspace: string;
   filePath: string;
   fileName: string;
-  onClose: () => void;
+  on关闭: () => void;
 }
 
-function EditorModal({ workspace, filePath, fileName, onClose }: EditorModalProps) {
+function EditorModal({ workspace, filePath, fileName, on关闭 }: EditorModalProps) {
   const [content, setContent] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -147,7 +147,7 @@ function EditorModal({ workspace, filePath, fileName, onClose }: EditorModalProp
         e.preventDefault();
         handleSave();
       }
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") on关闭();
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
@@ -222,7 +222,7 @@ function EditorModal({ workspace, filePath, fileName, onClose }: EditorModalProp
           </button>
 
           <button
-            onClick={onClose}
+            onClick={on关闭}
             style={{ padding: "0.5rem", borderRadius: "0.5rem", border: "none", cursor: "pointer", backgroundColor: "var(--card-elevated)", color: "var(--text-secondary)" }}
           >
             <X className="w-4 h-4" />
@@ -527,7 +527,7 @@ export function FileBrowser({ workspace, path, onNavigate, viewMode = "list" }: 
             placeholder="Folder name..."
             style={{ flex: 1, background: "transparent", border: "none", outline: "none", color: "var(--text-primary)", fontSize: "0.9rem" }}
           />
-          <button onClick={handleCreateFolder} style={{ padding: "0.25rem 0.75rem", borderRadius: "0.375rem", background: "var(--accent)", color: "#000", border: "none", cursor: "pointer", fontSize: "0.8rem" }}>Create</button>
+          <button onClick={handleCreateFolder} style={{ padding: "0.25rem 0.75rem", borderRadius: "0.375rem", background: "var(--accent)", color: "#000", border: "none", cursor: "pointer", fontSize: "0.8rem" }}>创建</button>
           <button onClick={() => setShowNewFolder(false)} style={{ padding: "0.25rem", borderRadius: "0.375rem", background: "none", color: "var(--text-muted)", border: "none", cursor: "pointer" }}><X className="w-4 h-4" /></button>
         </div>
       )}
@@ -544,7 +544,7 @@ export function FileBrowser({ workspace, path, onNavigate, viewMode = "list" }: 
             placeholder="filename.ts"
             style={{ flex: 1, background: "transparent", border: "none", outline: "none", color: "var(--text-primary)", fontSize: "0.9rem" }}
           />
-          <button onClick={handleCreateFile} style={{ padding: "0.25rem 0.75rem", borderRadius: "0.375rem", background: "var(--accent)", color: "#000", border: "none", cursor: "pointer", fontSize: "0.8rem" }}>Create</button>
+          <button onClick={handleCreateFile} style={{ padding: "0.25rem 0.75rem", borderRadius: "0.375rem", background: "var(--accent)", color: "#000", border: "none", cursor: "pointer", fontSize: "0.8rem" }}>创建</button>
           <button onClick={() => setShowNewFile(false)} style={{ padding: "0.25rem", borderRadius: "0.375rem", background: "none", color: "var(--text-muted)", border: "none", cursor: "pointer" }}><X className="w-4 h-4" /></button>
         </div>
       )}
@@ -756,7 +756,7 @@ export function FileBrowser({ workspace, path, onNavigate, viewMode = "list" }: 
           workspace={previewFile.workspace}
           path={previewFile.path}
           name={previewFile.name}
-          onClose={() => setPreviewFile(null)}
+          on关闭={() => setPreviewFile(null)}
         />
       )}
 
@@ -766,7 +766,7 @@ export function FileBrowser({ workspace, path, onNavigate, viewMode = "list" }: 
           workspace={editorFile.workspace}
           filePath={editorFile.path}
           fileName={editorFile.name}
-          onClose={() => { setEditorFile(null); loadItems(); }}
+          on关闭={() => { setEditorFile(null); loadItems(); }}
         />
       )}
     </>

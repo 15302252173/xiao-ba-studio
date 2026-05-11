@@ -1,5 +1,5 @@
 /**
- * Quick Actions API
+ * 快捷操作 API
  * POST /api/actions  body: { action }
  * Available actions: git-status, restart-gateway, clear-temp, usage-stats, heartbeat
  */
@@ -97,7 +97,7 @@ async function runAction(action: string): Promise<ActionResult> {
           const { stdout: u } = await execAsync('uptime -p').catch(() => ({ stdout: 'N/A' }));
           uptimeOut = u.trim();
         }
-        output = `Workspace: ${du.trim()}\n\nDisk: ${df.trim()}\n\nMemory:\n${memOut}\n\nCPU: ${cpuOut}\n\nUptime: ${uptimeOut}`;
+        output = `Workspace: ${du.trim()}\n\nDisk: ${df.trim()}\n\nMemory:\n${memOut}\n\nCPU: ${cpuOut}\n\n运行时间：${uptimeOut}`;
         break;
       }
 

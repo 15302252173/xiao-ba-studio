@@ -8,7 +8,7 @@ interface HabboCharacterProps {
     color: string;
     role: string;
     currentTask: string;
-    isActive: boolean;
+    is活跃: boolean;
   };
   position: { isoX: number; isoY: number };
 }
@@ -27,12 +27,12 @@ export function HabboCharacter({ agent, position }: HabboCharacterProps) {
   const { screenX, screenY } = isoToScreen(position.isoX, position.isoY);
 
   useEffect(() => {
-    if (!agent.isActive) return;
+    if (!agent.is活跃) return;
     const interval = setInterval(() => {
       setBobbing((prev) => (prev + 1) % 3);
     }, 300);
     return () => clearInterval(interval);
-  }, [agent.isActive]);
+  }, [agent.is活跃]);
 
   // Habbo character colors based on agent
   const getCharacterColors = () => {
@@ -55,7 +55,7 @@ export function HabboCharacter({ agent, position }: HabboCharacterProps) {
       style={{
         left: `calc(50% + ${screenX}px)`,
         top: `calc(50% + ${screenY}px)`,
-        transform: agent.isActive
+        transform: agent.is活跃
           ? `translate(-50%, -50%) translateY(${bobbing * -2}px)`
           : "translate(-50%, -50%)",
         zIndex: Math.floor(position.isoX + position.isoY),
@@ -105,7 +105,7 @@ export function HabboCharacter({ agent, position }: HabboCharacterProps) {
       )}
 
       {/* Habbo Character - pixel art style */}
-      <svg width="48" height="64" viewBox="0 0 48 64" style={{ filter: agent.isActive ? "none" : "grayscale(50%) opacity(70%)" }}>
+      <svg width="48" height="64" viewBox="0 0 48 64" style={{ filter: agent.is活跃 ? "none" : "grayscale(50%) opacity(70%)" }}>
         {/* Shadow */}
         <ellipse cx="24" cy="60" rx="12" ry="4" fill="rgba(0,0,0,0.3)" />
         
@@ -121,7 +121,7 @@ export function HabboCharacter({ agent, position }: HabboCharacterProps) {
         <rect x="34" y="36" width="6" height="12" fill={colors.shirt} stroke="#000" strokeWidth="1" />
         
         {/* Hands - typing animation when active */}
-        {agent.isActive && (
+        {agent.is活跃 && (
           <>
             <rect x="8" y="46" width="6" height="4" fill={colors.skin} stroke="#000" strokeWidth="0.5">
               <animateTransform
@@ -144,7 +144,7 @@ export function HabboCharacter({ agent, position }: HabboCharacterProps) {
             </rect>
           </>
         )}
-        {!agent.isActive && (
+        {!agent.is活跃 && (
           <>
             <rect x="8" y="46" width="6" height="4" fill={colors.skin} stroke="#000" strokeWidth="0.5" />
             <rect x="34" y="46" width="6" height="4" fill={colors.skin} stroke="#000" strokeWidth="0.5" />
@@ -166,14 +166,14 @@ export function HabboCharacter({ agent, position }: HabboCharacterProps) {
         <circle cx="30.5" cy="21.5" r="1" fill="#fff" />
         
         {/* Mouth */}
-        {agent.isActive ? (
+        {agent.is活跃 ? (
           <rect x="20" y="28" width="8" height="2" fill="#000" />
         ) : (
           <rect x="20" y="28" width="8" height="1" fill="#666" />
         )}
         
         {/* Idle zzZ animation */}
-        {!agent.isActive && (
+        {!agent.is活跃 && (
           <>
             <text x="42" y="12" fontFamily="Arial" fontSize="8" fill="#666">z</text>
             <text x="44" y="8" fontFamily="Arial" fontSize="10" fill="#888">z</text>
@@ -207,8 +207,8 @@ export function HabboCharacter({ agent, position }: HabboCharacterProps) {
         {agent.name}
       </div>
 
-      {/* Active indicator */}
-      {agent.isActive && (
+      {/* 活跃 indicator */}
+      {agent.is活跃 && (
         <div
           style={{
             position: "absolute",

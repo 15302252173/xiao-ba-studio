@@ -5,13 +5,13 @@ import { X, Key, Eye, EyeOff, Loader2, AlertCircle } from "lucide-react";
 
 interface ChangePasswordModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  on关闭: () => void;
   onSuccess: () => void;
 }
 
 export function ChangePasswordModal({
   isOpen,
-  onClose,
+  on关闭,
   onSuccess,
 }: ChangePasswordModalProps) {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -30,9 +30,9 @@ export function ChangePasswordModal({
     setError(null);
   };
 
-  const handleClose = () => {
+  const handle关闭 = () => {
     resetForm();
-    onClose();
+    on关闭();
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -89,7 +89,7 @@ export function ChangePasswordModal({
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-        onClick={handleClose}
+        onClick={handle关闭}
       />
 
       {/* Modal */}
@@ -103,7 +103,7 @@ export function ChangePasswordModal({
             <h2 className="text-xl font-semibold text-white">Change Password</h2>
           </div>
           <button
-            onClick={handleClose}
+            onClick={handle关闭}
             className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
           >
             <X className="w-5 h-5" />
@@ -205,7 +205,7 @@ export function ChangePasswordModal({
           <div className="flex gap-3 pt-4">
             <button
               type="button"
-              onClick={handleClose}
+              onClick={handle关闭}
               className="flex-1 px-4 py-3 bg-gray-800 text-gray-300 rounded-lg font-medium hover:bg-gray-700 transition-colors"
             >
               Cancel

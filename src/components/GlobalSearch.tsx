@@ -98,7 +98,7 @@ export function GlobalSearch({ fullPage = false }: GlobalSearchProps) {
           {!isSearching && results.length === 0 && query.length >= 2 && (
             <div className="p-8 text-center" style={{ color: "var(--text-secondary)" }}>
               <Search className="w-10 h-10 mx-auto mb-3 opacity-50" />
-              <p>No results found for: &quot;{query}&quot;</p>
+              <p>未找到结果 for: &quot;{query}&quot;</p>
             </div>
           )}
 

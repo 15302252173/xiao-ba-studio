@@ -8,7 +8,7 @@ interface PixelCharacterProps {
     color: string;
     role: string;
     currentTask: string;
-    isActive: boolean;
+    is活跃: boolean;
   };
   position: { x: number; y: number };
   deskType?: "large" | "normal" | "server";
@@ -23,7 +23,7 @@ export function PixelCharacter({
   const [typing, setTyping] = useState(false);
 
   useEffect(() => {
-    if (agent.isActive) {
+    if (agent.is活跃) {
       const typingInterval = setInterval(() => {
         setTyping((prev) => !prev);
       }, 800);
@@ -31,7 +31,7 @@ export function PixelCharacter({
     } else {
       setTyping(false);
     }
-  }, [agent.isActive]);
+  }, [agent.is活跃]);
 
   const getDeskStyle = () => {
     switch (deskType) {
@@ -138,7 +138,7 @@ export function PixelCharacter({
                 left: "3px",
                 right: "3px",
                 bottom: "3px",
-                backgroundColor: agent.isActive ? agent.color : "#333",
+                backgroundColor: agent.is活跃 ? agent.color : "#333",
                 opacity: 0.8,
               }}
             />
@@ -167,7 +167,7 @@ export function PixelCharacter({
                   left: "2px",
                   right: "2px",
                   bottom: "2px",
-                  backgroundColor: agent.isActive ? agent.color : "#333",
+                  backgroundColor: agent.is活跃 ? agent.color : "#333",
                   opacity: 0.7,
                 }}
               />
@@ -209,7 +209,7 @@ export function PixelCharacter({
                 key={i}
                 style={{
                   height: "8px",
-                  backgroundColor: agent.isActive && i <= 2 ? "#4ade80" : "#666",
+                  backgroundColor: agent.is活跃 && i <= 2 ? "#4ade80" : "#666",
                   border: "1px solid #000",
                 }}
               />
@@ -225,7 +225,7 @@ export function PixelCharacter({
           bottom: deskType === "server" ? "80px" : "50px",
           left: deskType === "large" ? "40px" : "30px",
           fontSize: "48px",
-          filter: agent.isActive ? "none" : "grayscale(50%) opacity(70%)",
+          filter: agent.is活跃 ? "none" : "grayscale(50%) opacity(70%)",
           animation: typing ? "pixel-typing 0.8s infinite" : "pixel-idle 3s infinite",
         }}
       >

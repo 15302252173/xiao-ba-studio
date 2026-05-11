@@ -7,7 +7,7 @@ interface Agent {
   color: string;
   role: string;
   currentTask: string;
-  isActive: boolean;
+  is活跃: boolean;
 }
 
 interface ZeldaCharacterProps {
@@ -149,7 +149,7 @@ export function ZeldaCharacter({ agent, position }: ZeldaCharacterProps) {
   const sprite = AgentSprites[agent.id] || AgentSprites.main;
 
   // Animation states
-  const isMoving = agent.isActive;
+  const isMoving = agent.is活跃;
 
   return (
     <div
@@ -171,7 +171,7 @@ export function ZeldaCharacter({ agent, position }: ZeldaCharacterProps) {
       {/* Character sprite */}
       <div
         style={{
-          filter: agent.isActive
+          filter: agent.is活跃
             ? "drop-shadow(0 2px 4px rgba(0,0,0,0.3))"
             : "grayscale(0.3) brightness(0.8)",
           imageRendering: "pixelated",
@@ -181,7 +181,7 @@ export function ZeldaCharacter({ agent, position }: ZeldaCharacterProps) {
       </div>
 
       {/* Idle indicator (zzZ) */}
-      {!agent.isActive && (
+      {!agent.is活跃 && (
         <div
           style={{
             position: "absolute",
@@ -196,8 +196,8 @@ export function ZeldaCharacter({ agent, position }: ZeldaCharacterProps) {
         </div>
       )}
 
-      {/* Active indicator (sparkle) */}
-      {agent.isActive && (
+      {/* 活跃 indicator (sparkle) */}
+      {agent.is活跃 && (
         <div
           style={{
             position: "absolute",

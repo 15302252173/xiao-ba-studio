@@ -120,18 +120,18 @@ export default function TerminalPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "1.75rem", fontWeight: 700, color: "var(--text-primary)", marginBottom: "0.125rem" }}>
-              Browser Terminal
+              浏览器终端
             </h1>
             <p style={{ color: "var(--text-muted)", fontSize: "0.8rem" }}>
-              Read-only commands only (ls, cat, df, ps, git status, etc.)
+              只读命令（ls, cat, df, ps, git status 等）
             </p>
           </div>
           <div style={{ display: "flex", gap: "0.5rem" }}>
             <button onClick={copyAll} style={{ padding: "0.375rem 0.75rem", borderRadius: "0.5rem", background: "var(--card)", border: "1px solid var(--border)", cursor: "pointer", color: "var(--text-muted)", display: "flex", alignItems: "center", gap: "0.375rem", fontSize: "0.8rem" }}>
-              <Copy className="w-3.5 h-3.5" /> Copy
+              <Copy className="w-3.5 h-3.5" /> 复制
             </button>
             <button onClick={clearHistory} style={{ padding: "0.375rem 0.75rem", borderRadius: "0.5rem", background: "var(--card)", border: "1px solid var(--border)", cursor: "pointer", color: "var(--text-muted)", display: "flex", alignItems: "center", gap: "0.375rem", fontSize: "0.8rem" }}>
-              <Trash2 className="w-3.5 h-3.5" /> Clear
+              <Trash2 className="w-3.5 h-3.5" /> 清空
             </button>
           </div>
         </div>
@@ -178,9 +178,9 @@ export default function TerminalPage() {
         {history.length === 0 ? (
           <div style={{ color: "#8b949e", textAlign: "center", paddingTop: "2rem" }}>
             <Terminal className="w-8 h-8 mx-auto mb-2 opacity-30" />
-            <p>Type a command or click a quick command above</p>
+            <p>输入命令，或点击上方快捷命令</p>
             <p style={{ fontSize: "0.7rem", marginTop: "0.5rem" }}>
-              Arrow Up/Down for command history
+              ↑↓ 浏览命令历史
             </p>
           </div>
         ) : (
@@ -216,7 +216,7 @@ export default function TerminalPage() {
         {loading && (
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#8b949e" }}>
             <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#4ade80", animation: "pulse 1s infinite" }} />
-            Running...
+            执行中...
           </div>
         )}
       </div>
@@ -238,7 +238,7 @@ export default function TerminalPage() {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           disabled={loading}
-          placeholder="Enter command..."
+          placeholder="输入命令..."
           autoComplete="off"
           spellCheck={false}
           style={{
@@ -265,7 +265,7 @@ export default function TerminalPage() {
           }}
         >
           <Send className="w-3.5 h-3.5" />
-          Run
+          执行
         </button>
       </div>
     </div>

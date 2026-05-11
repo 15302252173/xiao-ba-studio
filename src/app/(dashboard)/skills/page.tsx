@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import {
@@ -94,7 +94,7 @@ export default function SkillsPage() {
             marginBottom: "4px",
           }}
         >
-          Skills Manager
+          Skills 管理
         </h1>
         <p
           style={{
@@ -103,7 +103,7 @@ export default function SkillsPage() {
             color: "var(--text-secondary)",
           }}
         >
-          Skills disponibles en el sistema OpenClaw
+          系统中可用的 Skills
         </p>
       </div>
 
@@ -116,17 +116,17 @@ export default function SkillsPage() {
           marginBottom: "24px",
         }}
       >
-        <MetricCard icon={Puzzle} value={skills.length} label="Total Skills" />
+        <MetricCard icon={Puzzle} value={skills.length} label="Skills 总数" />
         <MetricCard
           icon={FolderOpen}
           value={workspaceCount}
-          label="Workspace Skills"
+          label="工作区 Skills"
           changeColor="positive"
         />
         <MetricCard
           icon={Package}
           value={systemCount}
-          label="System Skills"
+          label="系统 Skills"
           changeColor="secondary"
         />
       </div>
@@ -155,7 +155,7 @@ export default function SkillsPage() {
           />
           <input
             type="text"
-            placeholder="Buscar skills..."
+            placeholder="搜索 skills..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{
@@ -191,7 +191,7 @@ export default function SkillsPage() {
               transition: "all 150ms ease",
             }}
           >
-            Todas ({skills.length})
+            全部 ({skills.length})
           </button>
           <button
             onClick={() => setFilterSource("workspace")}
@@ -208,7 +208,7 @@ export default function SkillsPage() {
               transition: "all 150ms ease",
             }}
           >
-            Workspace ({workspaceCount})
+            工作区 ({workspaceCount})
           </button>
           <button
             onClick={() => setFilterSource("system")}
@@ -225,7 +225,7 @@ export default function SkillsPage() {
               transition: "all 150ms ease",
             }}
           >
-            System ({systemCount})
+            系统 ({systemCount})
           </button>
         </div>
       </div>
@@ -248,14 +248,14 @@ export default function SkillsPage() {
               margin: "0 auto 16px",
             }}
           />
-          <p style={{ color: "var(--text-secondary)" }}>No se encontraron skills</p>
+          <p style={{ color: "var(--text-secondary)" }}>未找到匹配的 skills</p>
         </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
-          {/* Workspace Skills */}
+          {/* 工作区 SKILLS */}
           {workspaceSkills.length > 0 && (filterSource === "all" || filterSource === "workspace") && (
             <div>
-              <SectionHeader label="WORKSPACE SKILLS" />
+              <SectionHeader label="工作区 Skills" />
               <div
                 style={{
                   display: "grid",
@@ -271,10 +271,10 @@ export default function SkillsPage() {
             </div>
           )}
 
-          {/* System Skills */}
+          {/* 系统 SKILLS */}
           {systemSkills.length > 0 && (filterSource === "all" || filterSource === "system") && (
             <div>
-              <SectionHeader label="SYSTEM SKILLS" />
+              <SectionHeader label="系统 Skills" />
               <div
                 style={{
                   display: "grid",
@@ -293,7 +293,7 @@ export default function SkillsPage() {
       )}
 
       {/* Detail Modal */}
-      {selectedSkill && <SkillDetailModal skill={selectedSkill} onClose={() => setSelectedSkill(null)} />}
+      {selectedSkill && <SkillDetailModal skill={selectedSkill} on关闭={() => setSelectedSkill(null)} />}
     </div>
   );
 }
@@ -412,7 +412,7 @@ function SkillCard({ skill, onClick }: { skill: Skill; onClick: () => void }) {
               color: "var(--text-muted)",
             }}
           >
-            {skill.fileCount} files
+            {skill.fileCount} 个文件
           </span>
         </div>
         {skill.homepage && (
@@ -424,7 +424,7 @@ function SkillCard({ skill, onClick }: { skill: Skill; onClick: () => void }) {
 }
 
 // Skill Detail Modal Component
-function SkillDetailModal({ skill, onClose }: { skill: Skill; onClose: () => void }) {
+function SkillDetailModal({ skill, on关闭 }: { skill: Skill; on关闭: () => void }) {
   return (
     <div
       style={{
@@ -437,7 +437,7 @@ function SkillDetailModal({ skill, onClose }: { skill: Skill; onClose: () => voi
         padding: "24px",
         zIndex: 100,
       }}
-      onClick={onClose}
+      onClick={on关闭}
     >
       <div
         style={{
@@ -460,7 +460,7 @@ function SkillDetailModal({ skill, onClose }: { skill: Skill; onClose: () => voi
           }}
         >
           <button
-            onClick={onClose}
+            onClick={on关闭}
             style={{
               position: "absolute",
               top: "24px",
@@ -502,7 +502,7 @@ function SkillDetailModal({ skill, onClose }: { skill: Skill; onClose: () => voi
               </p>
               <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
                 <div className="badge-positive">{skill.source}</div>
-                <div className="badge-info">{skill.fileCount} archivos</div>
+                <div className="badge-info">{skill.fileCount} 个文件</div>
                 {skill.agents && skill.agents.length > 0 && skill.agents.map((agent) => (
                   <div
                     key={agent}
@@ -554,7 +554,7 @@ function SkillDetailModal({ skill, onClose }: { skill: Skill; onClose: () => voi
               marginBottom: "12px",
             }}
           >
-            Archivos ({skill.files.length})
+            个文件 ({skill.files.length})
           </h3>
           <div
             style={{

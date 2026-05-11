@@ -10,7 +10,7 @@ interface OfficeAgent {
   color: string;
   role: string;
   currentTask: string;
-  isActive: boolean;
+  is活跃: boolean;
 }
 
 interface OfficeCanvasProps {
@@ -152,7 +152,7 @@ export function OfficeCanvas({ agents }: OfficeCanvasProps) {
     canvas.height = 675;
 
     // Disable image smoothing for pixel-perfect rendering
-    ctx.imageSmoothingEnabled = false;
+    ctx.imageSmoothing已启用 = false;
 
     const animate = () => {
       timeRef.current += 0.016; // ~60fps
@@ -190,7 +190,7 @@ export function OfficeCanvas({ agents }: OfficeCanvasProps) {
     // 3. Draw speech bubbles
     agents.forEach((agent) => {
       const position = AGENT_POSITIONS[agent.id];
-      if (position && (agent.isActive || hoveredAgent === agent.id)) {
+      if (position && (agent.is活跃 || hoveredAgent === agent.id)) {
         drawSpeechBubble(ctx, agent, position);
       }
     });
@@ -210,8 +210,8 @@ export function OfficeCanvas({ agents }: OfficeCanvasProps) {
 
     // Animate bounce - each agent has a unique phase offset
     const phaseOffset = agent.id.charCodeAt(0) * 0.7;
-    const bobSpeed = agent.isActive ? 3 : 1.5;
-    const bobAmount = agent.isActive ? 5 : 3;
+    const bobSpeed = agent.is活跃 ? 3 : 1.5;
+    const bobAmount = agent.is活跃 ? 5 : 3;
     const bobY = Math.sin(time * bobSpeed + phaseOffset) * bobAmount;
 
     // Calculate sprite dimensions (target height ~120-140px)
@@ -243,7 +243,7 @@ export function OfficeCanvas({ agents }: OfficeCanvasProps) {
     ctx.restore();
 
     // Sleep zzZ indicator for inactive
-    if (!agent.isActive) {
+    if (!agent.is活跃) {
       drawSleepIndicator(ctx, x, y - spriteHeight / 2 + bobY, time);
     }
 
@@ -268,7 +268,7 @@ export function OfficeCanvas({ agents }: OfficeCanvasProps) {
     const statusX = x - statusSize / 2;
     const statusY = y + spriteHeight / 2 + 32;
 
-    ctx.fillStyle = agent.isActive ? "#4AFF88" : "#666666";
+    ctx.fillStyle = agent.is活跃 ? "#4AFF88" : "#666666";
     ctx.fillRect(statusX, statusY, statusSize, statusSize);
     
     ctx.strokeStyle = "#000000";
@@ -276,7 +276,7 @@ export function OfficeCanvas({ agents }: OfficeCanvasProps) {
     ctx.strokeRect(statusX, statusY, statusSize, statusSize);
 
     // Pulsing effect for active
-    if (agent.isActive) {
+    if (agent.is活跃) {
       const pulse = Math.sin(time * 4);
       if (pulse > 0.3) {
         ctx.save();

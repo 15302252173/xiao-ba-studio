@@ -64,6 +64,14 @@ const nextConfig = {
     return config;
   },
   turbopack: {},
+  async rewrites() {
+    return [
+      {
+        source: '/login',
+        destination: '/login',
+      },
+    ];
+  },
   async headers() {
     return [
       {

@@ -19,20 +19,20 @@ export async function GET() {
     const usedMem = totalMem - freeMem;
 
     // ── Disk ─────────────────────────────────────────────────────────────────
-    let diskTotal = 0;
+    let disk总计 = 0;
     let diskUsed = 0;
     let diskFree = 0;
     try {
       const dfCmd = isMac ? "df -g / | tail -1" : "df -BG / | tail -1";
       const { stdout } = await execAsync(dfCmd);
       const parts = stdout.trim().split(/\s+/);
-      diskTotal = parseInt(parts[1].replace("G", ""));
+      disk总计 = parseInt(parts[1].replace("G", ""));
       diskUsed = parseInt(parts[2].replace("G", ""));
       diskFree = parseInt(parts[3].replace("G", ""));
     } catch {
       // disk stats unavailable
     }
-    const diskPercent = diskTotal > 0 ? (diskUsed / diskTotal) * 100 : 0;
+    const diskPercent = disk总计 > 0 ? (diskUsed / disk总计) * 100 : 0;
 
     return NextResponse.json({
       cpu: {
@@ -46,7 +46,7 @@ export async function GET() {
         free: parseFloat((freeMem / 1024 / 1024 / 1024).toFixed(2)),
       },
       disk: {
-        total: diskTotal,
+        total: disk总计,
         used: diskUsed,
         free: diskFree,
         percent: Math.round(diskPercent),

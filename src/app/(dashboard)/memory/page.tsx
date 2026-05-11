@@ -63,11 +63,11 @@ export default function MemoryPage() {
     try {
       setIsLoading(true);
       const res = await fetch(`/api/files?workspace=${encodeURIComponent(workspace)}`);
-      if (!res.ok) throw new Error("Failed to load files");
+      if (!res.ok) throw new Error("加载文件失败");
       const data = await res.json();
       setFiles(data);
     } catch (err) {
-      setError("Failed to load file tree");
+      setError("加载文件树失败");
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -390,7 +390,7 @@ export default function MemoryPage() {
                 >
                   {isLoading ? (
                     <div style={{ padding: "24px", textAlign: "center", color: "var(--text-secondary)" }}>
-                      Loading...
+                      加载中...
                     </div>
                   ) : error && files.length === 0 ? (
                     <div style={{ padding: "24px", textAlign: "center", color: "var(--negative)" }}>

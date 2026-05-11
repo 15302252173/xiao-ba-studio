@@ -26,21 +26,33 @@ export async function GET() {
       total: parseFloat((totalMem / 1024 / 1024 / 1024).toFixed(2)),
     };
 
-    // Disk
+    // Disk (cross-platform)
     let diskUsed = 0;
-    let diskTotal = 100;
+    let disk总计 = 100;
     try {
-      // macOS: df -g (1G blocks), Linux: df -BG
-      const isMac = process.platform === "darwin";
-      const dfCmd = isMac ? "df -g / | tail -1" : "df -BG / | tail -1";
-      const { stdout } = await execAsync(dfCmd);
-      const parts = stdout.trim().split(/\s+/);
-      if (isMac) {
-        // macOS: Filesystem 512-blocks Used Available Capacity ... OR with -g: Filesystem Gblocks Used Available ...
-        diskTotal = parseInt(parts[1]) || 100;
-        diskUsed = parseInt(parts[2]) || 0;
+      const platform = process.platform;
+      if (platform === "darwin") {
+        const { stdout } = await execAsync("df -g / | tail -1");
+        const parts = stdout.trim().split(/\s+/);
+        disk总计 = parseFloat(parts[1]) || 100;
+        diskUsed = parseFloat(parts[2]) || 0;
+      } else if (platform === "win32") {
+        const { stdout } = await execAsync("powershell -Command \"Get-CimInstance Win32_LogicalDisk -Filter 'DriveType=3' | Select-Object DeviceID,Size,FreeSpace | ConvertTo-Json\"");
+        const json = JSON.parse(stdout.trim());
+        const disks = Array.isArray(json) ? json : [json];
+        const cDrive = disks.find((d: any) => d.DeviceID === "C:");
+        if (cDrive) {
+          const totalBytes = parseFloat(cDrive.Size);
+          const freeBytes = parseFloat(cDrive.FreeSpace);
+          if (totalBytes > 0) {
+            disk总计 = parseFloat((totalBytes / 1024 / 1024 / 1024).toFixed(1));
+            diskUsed = parseFloat(((totalBytes - freeBytes) / 1024 / 1024 / 1024).toFixed(1));
+          }
+        }
       } else {
-        diskTotal = parseInt(parts[1].replace("G", ""));
+        const { stdout } = await execAsync("df -BG / | tail -1");
+        const parts = stdout.trim().split(/\s+/);
+        disk总计 = parseInt(parts[1].replace("G", ""));
         diskUsed = parseInt(parts[2].replace("G", ""));
       }
     } catch (error) {
@@ -66,26 +78,26 @@ export async function GET() {
     }
 
     // Tailscale VPN Status
-    let vpnActive = false;
+    let vpn活跃 = false;
     try {
       const { stdout } = await execAsync("tailscale status 2>/dev/null || true");
-      vpnActive = stdout.trim().length > 0 && !stdout.includes("Tailscale is stopped") && !stdout.includes("not running");
+      vpn活跃 = stdout.trim().length > 0 && !stdout.includes("Tailscale is stopped") && !stdout.includes("not running");
     } catch {
-      vpnActive = false;
+      vpn活跃 = false;
     }
 
     // Firewall Status
-    let firewallActive = false;
+    let firewall活跃 = false;
     try {
       if (process.platform === "darwin") {
         const { stdout } = await execAsync("/usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate 2>/dev/null || true");
-        firewallActive = stdout.includes("enabled");
+        firewall活跃 = stdout.includes("enabled");
       } else {
         const { stdout } = await execAsync("ufw status 2>/dev/null | head -1 || true");
-        firewallActive = stdout.includes("active");
+        firewall活跃 = stdout.includes("active");
       }
     } catch {
-      firewallActive = false;
+      firewall活跃 = false;
     }
 
     // Uptime
@@ -97,9 +109,9 @@ export async function GET() {
     return NextResponse.json({
       cpu,
       ram,
-      disk: { used: diskUsed, total: diskTotal },
-      vpnActive,
-      firewallActive,
+      disk: { used: diskUsed, total: disk总计 },
+      vpn活跃,
+      firewall活跃,
       activeServices,
       totalServices,
       uptime,

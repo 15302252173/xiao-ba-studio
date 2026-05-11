@@ -76,7 +76,7 @@ export function NotificationDropdown() {
   }, []);
 
   useEffect(() => {
-    // Close dropdown when clicking outside
+    // 关闭 dropdown when clicking outside
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
@@ -321,7 +321,7 @@ export function NotificationDropdown() {
                   color: "var(--text-muted)",
                 }}
               >
-                Loading...
+                加载中...
               </div>
             )}
 

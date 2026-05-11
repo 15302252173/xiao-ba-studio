@@ -48,7 +48,7 @@ export default function SettingsPage() {
       setSystemData(data);
       setLastRefresh(new Date());
     } catch (error) {
-      console.error("Failed to fetch system data:", error);
+      console.error("获取系统数据失败：", error);
     } finally {
       setLoading(false);
     }
@@ -75,10 +75,10 @@ export default function SettingsPage() {
             style={{ color: "var(--text-primary)", fontFamily: "var(--font-heading)" }}
           >
             <Settings className="w-6 h-6 md:w-8 md:h-8" style={{ color: "var(--accent)" }} />
-            Settings
+            设置
           </h1>
           <p className="text-sm md:text-base" style={{ color: "var(--text-secondary)" }}>
-            System status, integrations, and configuration
+            系统状态、集成与配置
           </p>
         </div>
 
@@ -100,7 +100,7 @@ export default function SettingsPage() {
       {/* Last Refresh Time */}
       {lastRefresh && (
         <div className="text-sm mb-6" style={{ color: "var(--text-muted)" }}>
-          Last updated: {lastRefresh.toLocaleTimeString()}
+          上次更新: {lastRefresh.toLocaleTimeString()}
         </div>
       )}
 
@@ -116,7 +116,7 @@ export default function SettingsPage() {
           <IntegrationStatus integrations={systemData?.integrations || null} />
         </div>
 
-        {/* Quick Actions */}
+        {/* 快捷操作 */}
         <div>
           <QuickActions onActionComplete={handleRefresh} />
         </div>
@@ -132,7 +132,7 @@ export default function SettingsPage() {
       >
         <div className="flex items-center justify-between text-sm" style={{ color: "var(--text-muted)" }}>
           <span>Mission Control v1.0.0</span>
-          <span>OpenClaw Agent Dashboard</span>
+          <span>OpenClaw 控制面板</span>
         </div>
       </div>
     </div>

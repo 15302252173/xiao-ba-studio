@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import {
@@ -92,7 +92,7 @@ export default function GitPage() {
       <div className="flex items-start justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold mb-2" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>
-            Git Dashboard
+            Git 看板
           </h1>
           <p style={{ color: "var(--text-secondary)", fontSize: "14px" }}>
             {repos.length} repositories · {dirtyRepos.length} with changes
@@ -154,12 +154,12 @@ export default function GitPage() {
                     </div>
                     {repo.ahead > 0 && (
                       <span className="flex items-center gap-0.5 text-xs" style={{ color: "var(--success)" }}>
-                        <ArrowUp className="w-3 h-3" /> {repo.ahead} ahead
+                        <ArrowUp className="w-3 h-3" /> {repo.ahead} 领先
                       </span>
                     )}
                     {repo.behind > 0 && (
                       <span className="flex items-center gap-0.5 text-xs" style={{ color: "var(--warning, #f59e0b)" }}>
-                        <ArrowDown className="w-3 h-3" /> {repo.behind} behind
+                        <ArrowDown className="w-3 h-3" /> {repo.behind} 落后
                       </span>
                     )}
                     {!repo.isDirty && (

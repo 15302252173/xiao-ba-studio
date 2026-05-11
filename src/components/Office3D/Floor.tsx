@@ -10,7 +10,7 @@ function buildMicrocementTexture() {
   const ctx = canvas.getContext('2d')!;
 
   const gradient = ctx.createLinearGradient(0, 0, 512, 512);
-  gradient.addColorStop(0, '#ECE8E1');
+  gradient.addColorStop(0, '#f5f0e8');
   gradient.addColorStop(1, '#DDD8D0');
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, 512, 512);

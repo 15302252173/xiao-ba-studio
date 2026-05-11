@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState, useCallback } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
@@ -28,8 +28,12 @@ interface SocialPlan {
 
 interface SocialData {
   plan: SocialPlan | null;
-  linkedin: { memory?: string };
-  baiwan: { memory?: string };
+  baiwan: {
+    identity?: string;
+    memory?: string;
+    recentMemory?: string[];
+    reports?: string[];
+  };
   lastUpdated: string;
 }
 
@@ -78,23 +82,21 @@ function fmtDate(d: Date) {
 }
 
 const MONTH_NAMES = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
+  "一月", "二月", "三月", "四月", "五月", "六月",
+  "七月", "八月", "九月", "十月", "十一月", "十二月",
 ];
 
-const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const WEEKDAYS = ["一", "二", "三", "四", "五", "六", "日"];
 
 /* ─── Post Detail Modal ─── */
 function PostModal({
   post,
-  onClose,
+  on关闭,
 }: {
   post: SocialPost;
-  onClose: () => void;
+  on关闭: () => void;
 }) {
-  const isLinkedin = post.platform === "linkedin";
-  const platformLabel = isLinkedin ? "LinkedIn" : "Xiaohongshu";
-  const statusLabel = post.status === "published" ? "✅ Published" : "🕐 Scheduled";
+  const statusLabel = post.status === "published" ? "✅ 已发布" : "🕐 已排期";
   const catStyle = CAT_COLORS[post.purpose?.category || ""] || {
     bg: "rgba(255,255,255,0.06)",
     color: "var(--text-secondary)",
@@ -113,7 +115,7 @@ function PostModal({
     >
       {/* Backdrop */}
       <div
-        onClick={onClose}
+        onClick={on关闭}
         style={{
           position: "absolute",
           inset: 0,
@@ -138,7 +140,7 @@ function PostModal({
         }}
       >
         <button
-          onClick={onClose}
+          onClick={on关闭}
           style={{
             position: "absolute",
             top: 14,
@@ -173,13 +175,11 @@ function PostModal({
               fontWeight: 600,
               padding: "4px 12px",
               borderRadius: 8,
-              background: isLinkedin
-                ? "rgba(0,119,181,0.2)"
-                : "rgba(255,36,66,0.2)",
-              color: isLinkedin ? "#4da3d4" : "#ff6b7f",
+              background: "rgba(255,36,66,0.2)",
+              color: "#ff6b7f",
             }}
           >
-            {platformLabel}
+            📕 小红书
           </span>
           <span style={{ fontSize: 12, color: "var(--text-muted)" }}>
             📅 {post.date} {post.time ? `(${post.time})` : ""}
@@ -238,7 +238,7 @@ function PostModal({
                 letterSpacing: ".3px",
               }}
             >
-              📌 Post Purpose
+              📌 发布目的
             </h4>
             {post.purpose.category && (
               <span
@@ -340,27 +340,23 @@ export default function SocialPage() {
     return () => clearInterval(interval);
   }, [fetchData]);
 
-  const posts = data?.plan?.posts || [];
+  // 只显示小红书帖子
+  const allPosts = data?.plan?.posts || [];
+  const posts = allPosts.filter((p) => p.platform === "xiaohongshu");
   const { dates, year, month } = getMonthDates(monthOffset);
   const todayStr = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' });
 
-  // Stats for current month
+  // 本月统计
   const monthPosts = posts.filter((p) => {
     const d = new Date(p.date);
     return d.getMonth() === month && d.getFullYear() === year;
   });
-  const linkedinCount = monthPosts.filter(
-    (p) => p.platform === "linkedin"
-  ).length;
-  const xhsCount = monthPosts.filter(
-    (p) => p.platform === "xiaohongshu"
-  ).length;
   const publishedCount = monthPosts.filter(
     (p) => p.status === "published"
   ).length;
   const plannedCount = monthPosts.length - publishedCount;
 
-  // Category distribution
+  // 类别分布
   const cats: Record<string, number> = {};
   monthPosts.forEach((p) => {
     const cat = p.purpose?.category || "Other";
@@ -373,7 +369,7 @@ export default function SocialPage() {
       {selectedPost && (
         <PostModal
           post={selectedPost}
-          onClose={() => setSelectedPost(null)}
+          on关闭={() => setSelectedPost(null)}
         />
       )}
 
@@ -405,7 +401,7 @@ export default function SocialPage() {
                 fontFamily: "var(--font-heading)",
               }}
             >
-              📱 Social Media
+              📕 小红书内容日历
             </h2>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <button
@@ -467,7 +463,7 @@ export default function SocialPage() {
                   color: "var(--text-secondary)",
                 }}
               >
-                Today
+                今天
               </button>
             </div>
           </div>
@@ -540,47 +536,42 @@ export default function SocialPage() {
                       flex: 1,
                     }}
                   >
-                    {dayPosts.map((p) => {
-                      const isLi = p.platform === "linkedin";
-                      return (
-                        <div
-                          key={p.id}
-                          onClick={() => setSelectedPost(p)}
-                          title={p.title}
-                          style={{
-                            fontSize: 10,
-                            fontWeight: 600,
-                            padding: "3px 6px",
-                            borderRadius: 5,
-                            cursor: "pointer",
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            transition: "transform .1s, box-shadow .1s",
-                            background: isLi
-                              ? "rgba(0,119,181,0.2)"
-                              : "rgba(255,36,66,0.2)",
-                            color: isLi ? "#4da3d4" : "#ff6b7f",
-                            borderLeft: `3px solid ${isLi ? "#0077B5" : "#FF2442"}`,
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.transform = "scale(1.05)";
-                            e.currentTarget.style.boxShadow =
-                              "0 2px 8px rgba(0,0,0,0.3)";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.transform = "scale(1)";
-                            e.currentTarget.style.boxShadow = "none";
-                          }}
-                        >
-                          {isLi ? "in" : "📕"}{" "}
-                          {p.title.length > 14
-                            ? p.title.slice(0, 14) + "…"
-                            : p.title}
-                          {p.status === "published" ? " ✅" : ""}
-                        </div>
-                      );
-                    })}
+                    {dayPosts.map((p) => (
+                      <div
+                        key={p.id}
+                        onClick={() => setSelectedPost(p)}
+                        title={p.title}
+                        style={{
+                          fontSize: 10,
+                          fontWeight: 600,
+                          padding: "3px 6px",
+                          borderRadius: 5,
+                          cursor: "pointer",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          transition: "transform .1s, box-shadow .1s",
+                          background: "rgba(255,36,66,0.2)",
+                          color: "#ff6b7f",
+                          borderLeft: "3px solid #FF2442",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = "scale(1.05)";
+                          e.currentTarget.style.boxShadow =
+                            "0 2px 8px rgba(0,0,0,0.3)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = "scale(1)";
+                          e.currentTarget.style.boxShadow = "none";
+                        }}
+                      >
+                        📕{" "}
+                        {p.title.length > 14
+                          ? p.title.slice(0, 14) + "…"
+                          : p.title}
+                        {p.status === "published" ? " ✅" : ""}
+                      </div>
+                    ))}
                   </div>
                 </div>
               );
@@ -615,9 +606,8 @@ export default function SocialPage() {
                 color: "var(--text-primary)",
               }}
             >
-              📊 This Month's Stats
+              📊 本月统计
             </h3>
-            {/* Platform counts */}
             <div
               style={{
                 display: "flex",
@@ -636,16 +626,7 @@ export default function SocialPage() {
                   color: "var(--text-secondary)",
                 }}
               >
-                <span
-                  style={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: "50%",
-                    background: "#0077B5",
-                    display: "inline-block",
-                  }}
-                />
-                LinkedIn
+                📕 帖子总数
               </div>
               <span
                 style={{
@@ -654,50 +635,11 @@ export default function SocialPage() {
                   color: "var(--text-primary)",
                 }}
               >
-                {linkedinCount} posts
-              </span>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                padding: "8px 0",
-                borderBottom: "1px solid var(--border)",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  fontSize: 13,
-                  color: "var(--text-secondary)",
-                }}
-              >
-                <span
-                  style={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: "50%",
-                    background: "#FF2442",
-                    display: "inline-block",
-                  }}
-                />
-                Xiaohongshu
-              </div>
-              <span
-                style={{
-                  fontSize: 16,
-                  fontWeight: 700,
-                  color: "var(--text-primary)",
-                }}
-              >
-                {xhsCount} posts
+                {monthPosts.length} 篇
               </span>
             </div>
 
-            {/* Category distribution */}
+            {/* 类别分布 */}
             <div
               style={{
                 marginTop: 14,
@@ -713,7 +655,7 @@ export default function SocialPage() {
                   fontWeight: 600,
                 }}
               >
-                Category Distribution
+                类别分布
               </div>
               {Object.entries(cats).map(([cat, count]) => {
                 const style = CAT_COLORS[cat] || {
@@ -749,7 +691,7 @@ export default function SocialPage() {
               })}
             </div>
 
-            {/* Publish status */}
+            {/* 发布状态 */}
             <div
               style={{
                 marginTop: 14,
@@ -765,7 +707,7 @@ export default function SocialPage() {
                   fontWeight: 600,
                 }}
               >
-                Publish Status
+                发布状态
               </div>
               <div
                 style={{
@@ -776,7 +718,7 @@ export default function SocialPage() {
                   color: "var(--text-secondary)",
                 }}
               >
-                <span>✅ Published</span>
+                <span>✅ 已发布</span>
                 <span>{publishedCount}</span>
               </div>
               <div
@@ -788,13 +730,13 @@ export default function SocialPage() {
                   color: "var(--text-secondary)",
                 }}
               >
-                <span>🕐 Scheduled</span>
+                <span>🕐 已排期</span>
                 <span>{plannedCount}</span>
               </div>
             </div>
           </div>
 
-          {/* Xiaohongshu placeholder */}
+          {/* 小红书 Agent 状态卡片 */}
           <div
             style={{
               background: "var(--card)",
@@ -811,28 +753,108 @@ export default function SocialPage() {
                 color: "var(--text-primary)",
               }}
             >
-              📕 Xiaohongshu
+              📕 小红书 · 百万 Agent
             </h3>
-            <div style={{ textAlign: "center", padding: "20px 0" }}>
-              <span style={{ fontSize: 36, display: "block", marginBottom: 8 }}>
-                📕
-              </span>
-              <p
-                style={{
+            {data?.baiwan?.identity ? (
+              <div style={{ fontSize: 12, lineHeight: 1.8, color: "var(--text-muted)" }}>
+                <div style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  marginBottom: 8,
+                }}>
+                  <span style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: "50%",
+                    background: "#30d158",
+                    display: "inline-block",
+                  }} />
+                  <span style={{ color: "var(--text-secondary)", fontWeight: 500 }}>
+                    Agent 已连接
+                  </span>
+                </div>
+                {data.baiwan.identity.slice(0, 120)}
+                {data.baiwan.identity.length > 120 ? "…" : ""}
+              </div>
+            ) : (
+              <div style={{ textAlign: "center", padding: "16px 0" }}>
+                <span style={{ fontSize: 36, display: "block", marginBottom: 8 }}>
+                  📕
+                </span>
+                <p style={{ color: "var(--text-muted)", fontSize: 13, marginBottom: 12 }}>
+                  尚未配置小红书 Agent
+                </p>
+                <div style={{
+                  fontSize: 11,
                   color: "var(--text-muted)",
-                  fontSize: 13,
-                }}
-              >
-                Coming Soon
-              </p>
+                  background: "var(--surface)",
+                  borderRadius: 6,
+                  padding: "8px 12px",
+                  textAlign: "left",
+                  lineHeight: 1.6,
+                }}>
+                  <div style={{ fontWeight: 600, marginBottom: 4, color: "var(--text-secondary)" }}>
+                    💡 配置方式：
+                  </div>
+                  设置环境变量 <code style={{ background: "rgba(10,132,255,0.15)", padding: "1px 4px", borderRadius: 3, color: "var(--accent)" }}>CONTENT_AGENT_WORKSPACE</code><br />
+                  指向小红书内容 Agent 的工作区路径
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* 账号配置卡片 */}
+          <div
+            style={{
+              background: "var(--card)",
+              border: "1px solid var(--border)",
+              borderRadius: 10,
+              padding: 18,
+            }}
+          >
+            <h3
+              style={{
+                fontSize: 15,
+                fontWeight: 600,
+                marginBottom: 14,
+                color: "var(--text-primary)",
+              }}
+            >
+              🔗 数据源配置
+            </h3>
+            <div style={{ fontSize: 12, color: "var(--text-muted)", lineHeight: 1.8 }}>
+              <div style={{
+                padding: "6px 10px",
+                background: "var(--surface)",
+                borderRadius: 6,
+              }}>
+                <div style={{ fontWeight: 600, color: "var(--text-secondary)", marginBottom: 2 }}>
+                  小红书 Agent
+                </div>
+                <code style={{ fontSize: 11, color: "var(--accent)" }}>
+                  {data?.baiwan?.identity ? "✅ 已连接" : "⚠️ 未配置"}
+                </code>
+              </div>
             </div>
+            <p style={{
+              marginTop: 10,
+              fontSize: 11,
+              color: "var(--text-muted)",
+              lineHeight: 1.6,
+              borderTop: "1px solid var(--border)",
+              paddingTop: 10,
+            }}>
+              💡 社交媒体内容由 OpenClaw Agent 生成并写入 <code style={{ background: "rgba(10,132,255,0.1)", padding: "1px 4px", borderRadius: 3 }}>social-media-plan.json</code>，
+              本页面自动读取并展示。目前不支持直接绑定第三方平台 API。
+            </p>
           </div>
 
 
         </div>
       </div>
 
-      {/* Last updated */}
+      {/* 上次更新 */}
       {data?.lastUpdated && (
         <p
           style={{
@@ -841,7 +863,7 @@ export default function SocialPage() {
             color: "var(--text-muted)",
           }}
         >
-          Last updated: {new Date(data.lastUpdated).toLocaleString("en-US", { timeZone: "America/Los_Angeles" })}
+          上次更新: {new Date(data.lastUpdated).toLocaleString("zh-CN", { timeZone: "America/Los_Angeles" })}
         </p>
       )}
     </div>

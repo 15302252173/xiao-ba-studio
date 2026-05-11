@@ -1,6 +1,6 @@
 'use client';
 
-function FrameBar({ position, args, color = '#C9BAA6' }: {
+function FrameBar({ position, args, color = '#c9a96e' }: {
   position: [number, number, number];
   args: [number, number, number];
   color?: string;
@@ -61,7 +61,7 @@ export default function Walls() {
         <mesh>
           <boxGeometry args={[0.08, 5.8, 19]} />
           <meshStandardMaterial
-            color="#DCEAF0"
+            color="#e8dfd0"
             transparent
             opacity={0.26}
             roughness={0.12}

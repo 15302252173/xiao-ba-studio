@@ -51,15 +51,13 @@ export async function GET() {
   try {
     const home = os.homedir();
     const openclawDir = process.env.OPENCLAW_DIR || join(home, ".openclaw");
-    // Agent workspace paths — configurable via env vars
-    const linkedinWorkspace = process.env.SOCIAL_AGENT_WORKSPACE || join(openclawDir, "workspace-social");
     const baiwanWorkspace = process.env.CONTENT_AGENT_WORKSPACE || join(openclawDir, "workspace-content");
 
-    // Social media plan (calendar data)
+    // 小红书内容计划
     let socialPlan = null;
     const planPaths = [
-      join(linkedinWorkspace, "social-media-plan.json"),
-      join(linkedinWorkspace, "reports", "social-media-plan.json"),
+      join(baiwanWorkspace, "social-media-plan.json"),
+      join(baiwanWorkspace, "reports", "social-media-plan.json"),
     ];
     for (const p of planPaths) {
       try {
@@ -71,20 +69,7 @@ export async function GET() {
       } catch {}
     }
 
-    // LinkedIn agent data
-    const linkedinMemory = safeReadFile(join(linkedinWorkspace, "MEMORY.md"));
-    const linkedinIdentity = safeReadFile(join(linkedinWorkspace, "IDENTITY.md"));
-    const linkedinRecentMemory = getRecentMemory(linkedinWorkspace);
-    const linkedinReports = getRecentReports(linkedinWorkspace);
-
-    let linkedinPostData = null;
-    try {
-      linkedinPostData = JSON.parse(
-        safeReadFile(join(linkedinWorkspace, "linkedin-data.json")) || "null"
-      );
-    } catch {}
-
-    // Baiwan agent data
+    // 百万 Agent (小红书) 数据
     const baiwanMemory = safeReadFile(join(baiwanWorkspace, "MEMORY.md"));
     const baiwanIdentity = safeReadFile(join(baiwanWorkspace, "IDENTITY.md"));
     const baiwanRecentMemory = getRecentMemory(baiwanWorkspace);
@@ -92,13 +77,6 @@ export async function GET() {
 
     return NextResponse.json({
       plan: socialPlan,
-      linkedin: {
-        identity: linkedinIdentity,
-        memory: linkedinMemory,
-        recentMemory: linkedinRecentMemory,
-        reports: linkedinReports,
-        postData: linkedinPostData,
-      },
       baiwan: {
         identity: baiwanIdentity,
         memory: baiwanMemory,

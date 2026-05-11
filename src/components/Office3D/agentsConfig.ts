@@ -1,13 +1,11 @@
 /**
- * Office 3D — Agent Configuration v2
+ * Office 3D — Agent Configuration v3 (Cross-Border E-Commerce Team)
  *
- * Redesigned layout: agents sit at fixed desks, walk to central round table when working.
- * The main agent is the supervisor at the back, never joins the round table.
- *
- * Agent names/emojis shown here are generic defaults.
- * The actual names and emojis are resolved at runtime from each agent's openclaw.json
- * (ui.emoji / ui.color / name fields).  These entries only supply fallback visuals
- * and 3-D positioning — they carry no personal identifying information.
+ * Layout:
+ *   Back row (supervisor):   小牛 (Director) — center, elevated
+ *   Front row (left → right): 设计师, 程序员, 高级运营, 经理
+ *   Each agent walks to the round table when working/thinking.
+ *   All agents rest at the break room when sleeping.
  */
 
 export interface AgentConfig {
@@ -23,34 +21,43 @@ export interface AgentConfig {
   faceDirection: number;                     // idle rotation.y (face toward center)
   color: string;
   role: string;
+  department: string;                        // team department label
   isMain?: boolean;
-  scale?: number;                            // default 1, lobster 1.5
-  // Keep legacy `position` as alias for deskPosition so AgentDesk doesn't break
+  scale?: number;                            // default 1, director 1.5
+  // Keep legacy alias for AgentDesk compatibility
   position: [number, number, number];
 }
 
 export const AGENTS: AgentConfig[] = [
+  // ════════════════════════════════════════════
+  // 小牛 — 总控 (Director / General Manager)
+  // ════════════════════════════════════════════
   {
     id: "main",
-    name: "Main Agent",
-    emoji: "🤖",
-    deskPosition: [0, 0, -8.8],
-    seatPosition: [0, 1.0, -6.1],
-    tablePosition: [0, 1.0, -2.0],   // center table — main agent also joins when working
+    name: "小牛",
+    emoji: "🐮",
+    deskPosition: [0, 0, -9.2],
+    seatPosition: [0, 1.0, -6.5],
+    tablePosition: [0, 1.0, -2.0],   // joins round table when working
     restPosition: [12.95, 0.42, 7.25],
     restRotation: -Math.PI / 2,
     restPose: 'lie',
     faceDirection: Math.PI, // face desk/monitor (-z direction)
-    position: [0, 0, -8.8],
+    position: [0, 0, -9.2],
     color: "#8B0000",
-    role: "Supervisor",
+    role: "总控 Director",
+    department: "管理层",
     isMain: true,
     scale: 1.5,
   },
+
+  // ════════════════════════════════════════════
+  // 设计师 — Designer (UI/Visual)
+  // ════════════════════════════════════════════
   {
-    id: "codev",
-    name: "Developer",
-    emoji: "💻",
+    id: "designer",
+    name: "设计师",
+    emoji: "🎨",
     deskPosition: [-5.5, 0, -4],
     seatPosition: [-5.5, 0.62, -3.0],
     tablePosition: [-2.17, 0.6, -1.25],
@@ -59,13 +66,18 @@ export const AGENTS: AgentConfig[] = [
     restPose: 'sit',
     faceDirection: Math.atan2(5.5, 4),
     position: [-5.5, 0, -4],
-    color: "#4CAF50",
-    role: "Coding Agent",
+    color: "#FF6B6B",
+    role: "设计师 Designer",
+    department: "创意设计部",
   },
+
+  // ════════════════════════════════════════════
+  // 程序员 — Developer (Full-Stack / Tech)
+  // ════════════════════════════════════════════
   {
-    id: "linkedin",
-    name: "Social Agent",
-    emoji: "👩🏻‍💻",
+    id: "developer",
+    name: "程序员",
+    emoji: "💻",
     deskPosition: [5.5, 0, -4],
     seatPosition: [5.5, 0.62, -3.0],
     tablePosition: [2.17, 0.6, -1.25],
@@ -74,13 +86,18 @@ export const AGENTS: AgentConfig[] = [
     restPose: 'sit',
     faceDirection: Math.atan2(-5.5, 4),
     position: [5.5, 0, -4],
-    color: "#0077B5",
-    role: "Social Media",
+    color: "#4CAF50",
+    role: "程序员 Developer",
+    department: "技术研发部",
   },
+
+  // ════════════════════════════════════════════
+  // 高级运营 — Senior Operator (B2C + B2B ops)
+  // ════════════════════════════════════════════
   {
-    id: "baiwan",
-    name: "Content Agent",
-    emoji: "📣",
+    id: "operator",
+    name: "高级运营",
+    emoji: "📈",
     deskPosition: [-5.5, 0, 3],
     seatPosition: [-5.5, 0.62, 4.0],
     tablePosition: [-2.5, 0.6, 0],
@@ -89,13 +106,18 @@ export const AGENTS: AgentConfig[] = [
     restPose: 'sit',
     faceDirection: Math.atan2(5.5, -3),
     position: [-5.5, 0, 3],
-    color: "#E91E63",
-    role: "Content Creator",
+    color: "#FB8C00",
+    role: "高级运营 Sr. Operator",
+    department: "运营部",
   },
+
+  // ════════════════════════════════════════════
+  // 经理 — Manager (Team Lead / PM)
+  // ════════════════════════════════════════════
   {
-    id: "teacher",
-    name: "Teacher",
-    emoji: "👩🏫",
+    id: "manager",
+    name: "经理",
+    emoji: "👔",
     deskPosition: [5.5, 0, 3],
     seatPosition: [5.5, 0.62, 4.0],
     tablePosition: [2.5, 0.6, 0],
@@ -105,38 +127,10 @@ export const AGENTS: AgentConfig[] = [
     faceDirection: Math.atan2(-5.5, -3),
     position: [5.5, 0, 3],
     color: "#9C27B0",
-    role: "Teaching Agent",
+    role: "经理 Manager",
+    department: "项目管理部",
   },
-  {
-    id: "screenshrimp",
-    name: "Scanner",
-    emoji: "🔍",
-    deskPosition: [-3.5, 0, 6],
-    seatPosition: [-3.5, 0.62, 7.0],
-    tablePosition: [-1.25, 0.6, 2.17],
-    restPosition: [11.1, 0.62, 5.48],
-    restRotation: Math.PI,
-    restPose: 'sit',
-    faceDirection: Math.atan2(3.5, -6),
-    position: [-3.5, 0, 6],
-    color: "#FF5722",
-    role: "Browse & Capture",
-  },
-  {
-    id: "arch",
-    name: "Architect",
-    emoji: "🏗️",
-    deskPosition: [3.5, 0, 6],
-    seatPosition: [3.5, 0.62, 7.0],
-    tablePosition: [1.25, 0.6, 2.17],
-    restPosition: [12.85, 0.62, 6.35],
-    restRotation: -2.35,
-    restPose: 'sit',
-    faceDirection: Math.atan2(-3.5, -6),
-    position: [3.5, 0, 6],
-    color: "#607D8B",
-    role: "System Architecture",
-  },
+
 ];
 
 export type AgentStatus = "idle" | "working" | "thinking" | "sleeping" | "error";

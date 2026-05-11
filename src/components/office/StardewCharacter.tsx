@@ -8,7 +8,7 @@ interface CharacterProps {
     color: string;
     role: string;
     currentTask: string;
-    isActive: boolean;
+    is活跃: boolean;
   };
   position: { x: number; y: number };
 }
@@ -75,12 +75,12 @@ export function StardewCharacter({ agent, position }: CharacterProps) {
   };
 
   const details = getCharacterDetails();
-  const isActive = agent.isActive;
+  const is活跃 = agent.is活跃;
 
   return (
     <g transform={`translate(${position.x}, ${position.y})`}>
       {/* Speech bubble with task (appears on hover or when active) */}
-      {isActive && agent.currentTask && (
+      {is活跃 && agent.currentTask && (
         <g className="speech-bubble" style={{ pointerEvents: "none" }}>
           {/* Bubble */}
           <rect
@@ -192,7 +192,7 @@ export function StardewCharacter({ agent, position }: CharacterProps) {
         </g>
 
         {/* Binary code streaming effect */}
-        {isActive && (
+        {is活跃 && (
           <text
             x="0"
             y="-15"
@@ -321,8 +321,8 @@ export function StardewCharacter({ agent, position }: CharacterProps) {
         )}
 
         {/* Activity indicator */}
-        {isActive ? (
-          // Active - subtle bounce animation
+        {is活跃 ? (
+          // 活跃 - subtle bounce animation
           <g>
             <animateTransform
               attributeName="transform"
@@ -368,11 +368,11 @@ export function StardewCharacter({ agent, position }: CharacterProps) {
           cx="0"
           cy="48"
           r="3"
-          fill={isActive ? "#4AFF88" : "#6B7280"}
+          fill={is活跃 ? "#4AFF88" : "#6B7280"}
           stroke="#2A2A2A"
           strokeWidth="1"
         >
-          {isActive && <animate attributeName="opacity" values="0.7;1;0.7" dur="1.5s" repeatCount="indefinite" />}
+          {is活跃 && <animate attributeName="opacity" values="0.7;1;0.7" dur="1.5s" repeatCount="indefinite" />}
         </circle>
       </g>
 
@@ -389,13 +389,13 @@ export function StardewCharacter({ agent, position }: CharacterProps) {
         }}
         onMouseLeave={(e) => {
           const bubble = e.currentTarget.previousSibling as SVGElement;
-          if (bubble && !isActive) bubble.style.opacity = "0";
+          if (bubble && !is活跃) bubble.style.opacity = "0";
         }}
       />
 
       <style jsx>{`
         .speech-bubble {
-          opacity: ${isActive ? "1" : "0"};
+          opacity: ${is活跃 ? "1" : "0"};
           transition: opacity 0.3s ease;
           animation: bubble-pop 0.3s ease;
         }

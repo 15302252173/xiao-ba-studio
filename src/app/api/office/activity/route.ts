@@ -30,13 +30,11 @@ const TOOL_ICONS: Record<string, string> = {
 };
 
 const AGENT_MAP: Record<string, { name: string; emoji: string }> = {
-  main: { name: "Main Agent", emoji: process.env.NEXT_PUBLIC_AGENT_EMOJI || "🤖" },
-  codev: { name: "Developer", emoji: "💻" },
-  linkedin: { name: "Social Agent", emoji: "👩🏻‍💻" },
-  baiwan: { name: "Content Agent", emoji: "📣" },
-  teacher: { name: "Teacher", emoji: "👩🏫" },
-  screenshrimp: { name: "Scanner", emoji: "🔍" },
-  arch: { name: "Architect", emoji: "🏗️" },
+  main: { name: "小牛", emoji: "🐮" },
+  designer: { name: "设计师", emoji: "🎨" },
+  developer: { name: "程序员", emoji: "💻" },
+  operator: { name: "高级运营", emoji: "📈" },
+  manager: { name: "经理", emoji: "👔" },
 };
 
 function parseSessionJsonl(filePath: string, agentId: string): LiveActivityEvent[] {

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { BRANDING } from "@/config/branding";
 
@@ -40,7 +40,7 @@ const WORKFLOWS: Workflow[] = [
     status: "active",
     steps: [
       "Read the Twitter/X timeline via bird CLI",
-      "Filter news about AI, web dev, architecture, and dev tools",
+      "筛选 AI、Web 开发、架构与开发工具相关新闻",
       "Select the 5-7 most relevant news items for the owner's niche",
       "Generate a structured summary with links and context",
       "Send digest via Telegram",
@@ -131,7 +131,7 @@ const WORKFLOWS: Workflow[] = [
     emoji: "🏛️",
     name: "Advisory Board",
     description: "7 AI advisors with their own personalities and memories. Consult any advisor or convene the full board.",
-    schedule: "On-demand",
+    schedule: "个按需触发",
     trigger: "demand",
     status: "active",
     steps: [
@@ -194,7 +194,7 @@ function StatusBadge({ status }: { status: "active" | "inactive" }) {
         textTransform: "uppercase",
         letterSpacing: "0.5px",
       }}>
-        {status === "active" ? "Active" : "Inactive"}
+        {status === "active" ? "活跃" : "未激活"}
       </span>
     </div>
   );
@@ -216,7 +216,7 @@ function TriggerBadge({ trigger }: { trigger: "cron" | "demand" }) {
       letterSpacing: "0.4px",
       textTransform: "uppercase" as const,
     }}>
-      {trigger === "cron" ? "⏱ Cron" : "⚡ On-demand"}
+      {trigger === "cron" ? "⏱ Cron" : "⚡ 个按需触发"}
     </div>
   );
 }
@@ -237,16 +237,16 @@ export default function WorkflowsPage() {
           Workflows
         </h1>
         <p style={{ fontFamily: "var(--font-body)", fontSize: "13px", color: "var(--text-secondary)" }}>
-          {WORKFLOWS.filter(w => w.status === "active").length} active flows · {WORKFLOWS.filter(w => w.trigger === "cron").length} automated crons · {WORKFLOWS.filter(w => w.trigger === "demand").length} on-demand
+          {WORKFLOWS.filter(w => w.status === "active").length} 个活跃流程 · {WORKFLOWS.filter(w => w.trigger === "cron").length} 个自动定时 · {WORKFLOWS.filter(w => w.trigger === "demand").length} 个按需触发
         </p>
       </div>
 
       {/* Stats row */}
       <div style={{ display: "flex", gap: "12px", marginBottom: "32px", flexWrap: "wrap" }}>
         {[
-          { label: "Total workflows", value: WORKFLOWS.length, color: "var(--text-primary)" },
-          { label: "Active crons", value: WORKFLOWS.filter(w => w.trigger === "cron" && w.status === "active").length, color: "#60a5fa" },
-          { label: "On-demand", value: WORKFLOWS.filter(w => w.trigger === "demand").length, color: "var(--accent)" },
+          { label: "总计 workflows", value: WORKFLOWS.length, color: "var(--text-primary)" },
+          { label: "活跃 crons", value: WORKFLOWS.filter(w => w.trigger === "cron" && w.status === "active").length, color: "#60a5fa" },
+          { label: "个按需触发", value: WORKFLOWS.filter(w => w.trigger === "demand").length, color: "var(--accent)" },
         ].map((stat) => (
           <div key={stat.label} style={{
             padding: "16px 20px",

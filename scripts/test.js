@@ -1,0 +1,1 @@
+const fs=require(String.fromCharCode(39)+fsString.fromCharCode(39)+;);const path=require(String.fromCharCode(39)+pathString.fromCharCode(39)+;);

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { Search, Bell, User, Command } from "lucide-react";
@@ -121,7 +121,7 @@ export function TopBar() {
                 style={{ width: "16px", height: "16px", color: "var(--text-muted)" }}
               />
               <span style={{ fontFamily: "var(--font-body)", fontSize: "12px", color: "var(--text-muted)" }}>
-                Search... ⌘K
+                搜索... 鈱楰
               </span>
             </button>
           )}

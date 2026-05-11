@@ -1,0 +1,28 @@
+{
+  "agents": {
+    "main": {
+      "id": "main",
+      "status": "working",
+      "currentTask": "总控调度 — 3个Agent刚完成MechPart+B端网站+牛二集成",
+      "lastActivity": "2026-05-10T09:12:00+08:00"
+    },
+    "backend-coder": {
+      "id": "backend-coder",
+      "status": "idle",
+      "currentTask": "✅ 完成：Product/Category数据模型+API+种子数据",
+      "lastActivity": "2026-05-10T09:10:00+08:00"
+    },
+    "frontend-coder": {
+      "id": "frontend-coder",
+      "status": "idle",
+      "currentTask": "✅ 完成：Admin后台分类+产品编辑+前台3页面API改造",
+      "lastActivity": "2026-05-10T09:08:00+08:00"
+    },
+    "agent-coder": {
+      "id": "agent-coder",
+      "status": "idle",
+      "currentTask": "✅ 完成：牛二Agent监控面板+状态API",
+      "lastActivity": "2026-05-10T09:12:00+08:00"
+    }
+  }
+}

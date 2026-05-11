@@ -132,6 +132,13 @@ function OfficeSceneTicker() {
 export default function Office3D() {
   const [selectedAgent, setSelectedAgent] = useState<string | null>(null);
   const [interactionModal, setInteractionModal] = useState<string | null>(null);
+  const [modalData, setModalData] = useState<{
+    todayTokens: number;
+    activeAgents: number;
+    totalAgents: number;
+    uptime: string;
+    recentSessions: number;
+  }>({ todayTokens: 0, activeAgents: 0, totalAgents: 0, uptime: '...', recentSessions: 0 });
   const [controlMode] = useState<'orbit' | 'fps'>('orbit');
   const isMobile = useIsMobile();
   const [officeCameraPreset, setOfficeCameraPreset] = useState<OfficeCameraPreset>(() => getOfficeCameraPresetFromWindow());
@@ -231,6 +238,58 @@ export default function Office3D() {
       window.clearInterval(interval);
     };
   }, [fetchAgentStates]);
+
+  // Poll /api/agents/status every 10s for real-time sub-agent status
+  const fetchAgentStatuses = useCallback(async () => {
+    try {
+      const res = await fetch('/api/agents/status');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (!data.agents || typeof data.agents !== 'object') return;
+
+      setAgentStates(prev => {
+        const next = { ...prev };
+        for (const [agentId, entry] of Object.entries(data.agents) as [string, any][]) {
+          if (!agentId) continue;
+          let status: AgentState['status'] = 'idle';
+          switch (entry.status) {
+            case 'working': status = 'working'; break;
+            case 'thinking': status = 'thinking'; break;
+            case 'sleeping': status = 'sleeping'; break;
+            case 'error': status = 'error'; break;
+            case 'idle': default: status = 'idle'; break;
+          }
+          next[agentId] = {
+            id: agentId,
+            status,
+            currentTask: entry.currentTask || prev[agentId]?.currentTask || '',
+            lastActivity: entry.lastActivity || prev[agentId]?.lastActivity,
+            model: prev[agentId]?.model,
+            sessionCount: prev[agentId]?.sessionCount,
+            totalTokens: prev[agentId]?.totalTokens,
+            recentSessions: prev[agentId]?.recentSessions,
+          };
+        }
+        return next;
+      });
+    } catch {
+      // silently fail
+    }
+  }, []);
+
+  useEffect(() => {
+    const initialFetch = window.setTimeout(() => {
+      void fetchAgentStatuses();
+    }, 1000);
+    const interval = window.setInterval(() => {
+      void fetchAgentStatuses();
+    }, 10000);
+
+    return () => {
+      window.clearTimeout(initialFetch);
+      window.clearInterval(interval);
+    };
+  }, [fetchAgentStatuses]);
 
   // Fetch ClawTeam data
   const clearClawTeamPollTimeout = useCallback(() => {
@@ -350,8 +409,58 @@ export default function Office3D() {
 
   const handleCloseModal = () => setInteractionModal(null);
 
+  // Fetch data for interaction modals
+  useEffect(() => {
+    if (!interactionModal) return;
+
+    const fetchModalData = async () => {
+      const data = { todayTokens: 0, activeAgents: 0, totalAgents: 0, uptime: '...', recentSessions: 0 };
+
+      try {
+        const costRes = await fetch('/api/costs?timeframe=1d');
+        if (costRes.ok) {
+          const costData = await costRes.json();
+          data.todayTokens = (costData.byAgent || []).reduce(
+            (sum: number, a: { tokens: number }) => sum + (a.tokens || 0), 0
+          );
+        }
+      } catch {}
+
+      try {
+        const agentsRes = await fetch('/api/agents');
+        if (agentsRes.ok) {
+          const agentsData = await agentsRes.json();
+          data.totalAgents = (agentsData.agents || []).length;
+          data.activeAgents = (agentsData.agents || []).filter(
+            (a: { status: string }) => a.status === 'online'
+          ).length;
+        }
+      } catch {}
+
+      try {
+        const sysRes = await fetch('/api/system/stats');
+        if (sysRes.ok) {
+          const sysData = await sysRes.json();
+          data.uptime = sysData.uptime || '...';
+        }
+      } catch {}
+
+      try {
+        const actRes = await fetch('/api/activities?limit=1');
+        if (actRes.ok) {
+          const actData = await actRes.json();
+          data.recentSessions = actData.total || 0;
+        }
+      } catch {}
+
+      setModalData(data);
+    };
+
+    fetchModalData();
+  }, [interactionModal]);
+
   return (
-    <div className={`office-3d-root fixed top-0 bottom-0 right-0 z-0 ${isMobile ? 'left-0 pb-16' : 'left-[68px]'}`} style={{ backgroundColor: '#0a1628' }} suppressHydrationWarning>
+    <div className={`office-3d-root fixed top-0 bottom-0 right-0 z-0 ${isMobile ? 'left-0 pb-16' : 'left-[68px]'}`} style={{ backgroundColor: '#f0e8d5' }} suppressHydrationWarning>
       <Canvas
         key={`office-canvas-${officeCameraPreset.id}`}
         camera={officeCameraPreset.camera}
@@ -363,7 +472,7 @@ export default function Office3D() {
         style={{ width: '100%', height: '100%' }}
       >
         {isOfficeQaMode ? <OfficeSceneTicker /> : null}
-        <color attach="background" args={['#0a1628']} />
+        <color attach="background" args={['#f0e8d5']} />
 
         <Suspense fallback={
           <mesh>
@@ -376,7 +485,7 @@ export default function Office3D() {
           <Walls />
 
           {/* Central display table */}
-          <RoundTable />
+          <RoundTable onClick={() => setInteractionModal('roadmap')} />
 
           {/* === Cherry Blossom Garden (connecting two buildings) === */}
           <CherryBlossomGarden />
@@ -489,7 +598,10 @@ export default function Office3D() {
                 <>
                   <p className="text-lg">📚 Browse workspace documents, memory & skills</p>
                   <div className="bg-gray-800 p-4 rounded border border-gray-700">
-                    <p className="text-sm text-gray-400 mb-2">Quick Links:</p>
+                    <p className="text-sm text-gray-400 mb-2">
+                      Recent activity sessions: <span className="text-yellow-400 font-bold">{modalData.recentSessions}</span>
+                    </p>
+                    <p className="text-sm text-gray-400 mb-3">Quick Links:</p>
                     <ul className="space-y-2">
                       <li><a href="/memory" className="text-yellow-400 hover:underline">→ Open Reports</a></li>
                       <li><a href="/files" className="text-yellow-400 hover:underline">→ File Manager</a></li>
@@ -525,15 +637,23 @@ export default function Office3D() {
                   <div className="bg-gray-800 p-4 rounded border border-gray-700 space-y-3">
                     <div>
                       <p className="text-sm text-gray-400">Today's Token Usage:</p>
-                      <p className="text-2xl font-bold text-yellow-400">47,000</p>
+                      <p className="text-2xl font-bold text-yellow-400">
+                        {modalData.todayTokens >= 1_000_000
+                          ? `${(modalData.todayTokens / 1_000_000).toFixed(1)}M`
+                          : modalData.todayTokens >= 1_000
+                            ? `${(modalData.todayTokens / 1_000).toFixed(1)}K`
+                            : modalData.todayTokens}
+                      </p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-400">Active Agents:</p>
-                      <p className="text-2xl font-bold text-green-400">3 / 6</p>
+                      <p className="text-2xl font-bold text-green-400">
+                        {modalData.activeAgents} / {modalData.totalAgents}
+                      </p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-400">System Uptime:</p>
-                      <p className="text-2xl font-bold text-blue-400">12h 34m</p>
+                      <p className="text-2xl font-bold text-blue-400">{modalData.uptime}</p>
                     </div>
                   </div>
                 </>

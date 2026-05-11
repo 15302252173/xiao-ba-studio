@@ -7,8 +7,8 @@ interface SystemStats {
   cpu: number;
   ram: { used: number; total: number };
   disk: { used: number; total: number };
-  vpnActive: boolean;
-  firewallActive: boolean;
+  vpn活跃: boolean;
+  firewall活跃: boolean;
   activeServices: number;
   totalServices: number;
   uptime: string;
@@ -19,8 +19,8 @@ export function StatusBar() {
     cpu: 0,
     ram: { used: 0, total: 4 },
     disk: { used: 0, total: 100 },
-    vpnActive: false,
-    firewallActive: true,
+    vpn活跃: false,
+    firewall活跃: true,
     activeServices: 0,
     totalServices: 4,
     uptime: "0d 0h",
@@ -35,7 +35,7 @@ export function StatusBar() {
           setStats(data);
         }
       } catch (error) {
-        console.error("Failed to fetch system stats:", error);
+        console.error("获取系统状态失败：", error);
       }
     };
 
@@ -118,12 +118,12 @@ export function StatusBar() {
       }}
     >
       {/* CPU */}
-      <StatusMetric icon={Cpu} label="CPU" value={`${stats.cpu}%`} barPercent={stats.cpu} color={cpuColor} />
+      <StatusMetric icon={Cpu} label="处理器" value={`${stats.cpu}%`} barPercent={stats.cpu} color={cpuColor} />
 
       {/* RAM */}
       <StatusMetric
         icon={MemoryStick}
-        label="RAM"
+        label="内存"
         value={`${stats.ram.used.toFixed(1)}/${stats.ram.total}GB`}
         barPercent={ramPercent}
         color={ramColor}
@@ -132,7 +132,7 @@ export function StatusBar() {
       {/* Disk */}
       <StatusMetric
         icon={HardDrive}
-        label="DISK"
+        label="磁盘"
         value={`${diskPercent.toFixed(0)}%`}
         barPercent={diskPercent}
         color={diskColor}
@@ -148,7 +148,7 @@ export function StatusBar() {
             width: "6px",
             height: "6px",
             borderRadius: "50%",
-            backgroundColor: stats.vpnActive ? "var(--positive)" : "var(--negative)",
+            backgroundColor: stats.vpn活跃 ? "var(--positive)" : "var(--negative)",
           }}
         />
         <span
@@ -170,7 +170,7 @@ export function StatusBar() {
           style={{
             width: "12px",
             height: "12px",
-            color: stats.firewallActive ? "var(--positive)" : "var(--negative)",
+            color: stats.firewall活跃 ? "var(--positive)" : "var(--negative)",
           }}
         />
         <span
@@ -217,7 +217,7 @@ export function StatusBar() {
             color: "var(--text-muted)",
           }}
         >
-          Uptime: {stats.uptime}
+          运行时间：{stats.uptime}
         </span>
       </div>
     </div>

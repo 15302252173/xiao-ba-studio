@@ -1,11 +1,15 @@
 'use client';
 
-export default function RoundTable() {
+interface RoundTableProps {
+  onClick?: () => void;
+}
+
+export default function RoundTable({ onClick }: RoundTableProps) {
   return (
-    <group position={[0, 0, 0]}>
+    <group position={[0, 0, 0]} onClick={onClick}>
       <mesh position={[0, 0.5, 0]} castShadow receiveShadow>
         <boxGeometry args={[3.2, 0.1, 1.6]} />
-        <meshStandardMaterial color="#D9BC92" roughness={0.62} metalness={0.04} />
+        <meshStandardMaterial color="#faf7f0" roughness={0.62} metalness={0.04} />
       </mesh>
 
       {[-1.28, 1.28].map((x, i) =>

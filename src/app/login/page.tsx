@@ -30,10 +30,10 @@ function LoginForm() {
         router.push(from);
         router.refresh();
       } else {
-        setError("Incorrect password");
+        setError("密码错误");
       }
     } catch {
-      setError("Connection error");
+      setError("连接失败");
     }
 
     setLoading(false);
@@ -70,7 +70,7 @@ function LoginForm() {
           className="text-sm"
           style={{ color: 'var(--text-secondary)' }}
         >
-          Enter your password
+          输入密码
         </p>
       </div>
 
@@ -91,7 +91,7 @@ function LoginForm() {
               border: '1px solid var(--border)',
               color: 'var(--text-primary)',
             }}
-            placeholder="Password"
+            placeholder="密码"
             required
           />
         </div>
@@ -118,7 +118,7 @@ function LoginForm() {
             color: 'white',
           }}
         >
-          {loading ? "Verifying..." : "Sign In"}
+          {loading ? "验证中..." : "登录"}
         </button>
       </form>
 

@@ -5,6 +5,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { Text } from '@react-three/drei';
 import { Group, Vector3 } from 'three';
 import TempWorkerAvatar from './TempWorkerAvatar';
+import Whiteboard from './Whiteboard';
 
 /** ClawTeam member from API */
 export interface CTMember {
@@ -42,7 +43,7 @@ const SLOTS: Array<{
   { deskPos: [CX + 7, 0, 0], seatPos: [CX + 7, 0.62, 1], tablePos: [CX + 2.5, 0.6, 0], faceDir: Math.atan2(-7, 0) },
 ];
 
-const WORKER_COLORS = ['#FF9800', '#03A9F4', '#4CAF50', '#E91E63', '#9C27B0', '#00BCD4', '#FF5722', '#607D8B'];
+const WORKER_COLORS = ['#c9a96e', '#8b7355', '#6b4a31', '#a08060', '#d4a96a', '#9b7b55', '#b89060', '#c0a070'];
 
 /** Smooth-moving temp worker wrapper */
 function MovingTempWorker({ member, slot, color }: { member: CTMember; slot: typeof SLOTS[0]; color: string }) {
@@ -182,27 +183,7 @@ function LoungeDecor() {
         </group>
       ))}
 
-      <group position={[CX + 10.7, 0, -1.1]}>
-        <mesh position={[0, 2.1, 0]} castShadow>
-          <boxGeometry args={[0.08, 1.8, 2.6]} />
-          <meshStandardMaterial color="#374151" roughness={0.54} metalness={0.24} />
-        </mesh>
-        <mesh position={[-0.05, 2.1, 0]} castShadow>
-          <boxGeometry args={[0.02, 1.58, 2.38]} />
-          <meshStandardMaterial color="#FAFAFA" roughness={0.34} />
-        </mesh>
-        {[
-          [-0.06, 2.52, -0.56, '#2563EB', 0.82],
-          [-0.06, 2.22, 0.12, '#EF4444', 0.98],
-          [-0.06, 1.92, -0.08, '#16A34A', 0.7],
-          [-0.06, 1.68, 0.62, '#F59E0B', 0.54],
-        ].map(([x, y, z, color, length], index) => (
-          <mesh key={`whiteboard-line-${index}`} position={[x as number, y as number, z as number]}>
-            <boxGeometry args={[0.03, 0.04, length as number]} />
-            <meshStandardMaterial color={color as string} roughness={0.4} />
-          </mesh>
-        ))}
-      </group>
+      <Whiteboard position={[CX + 10.7, 0.6, -1.1]} rotation={[0, 0, 0]} />
 
       <group position={[CX + 7.9, 0, 6.3]}>
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, 0]} receiveShadow>
@@ -279,7 +260,7 @@ export default function ClawTeamOffice({ members, taskSummary, teamName }: ClawT
       {/* === FLOOR: warm off-white / cream === */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[CX, 0.001, 0]} receiveShadow>
         <planeGeometry args={[22, 18]} />
-        <meshStandardMaterial color="#E8E0D4" roughness={0.75} metalness={0.03} />
+        <meshStandardMaterial color="#f5f0e8" roughness={0.75} metalness={0.03} />
       </mesh>
       {/* Floor accent area — slightly lighter center */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[CX, 0.005, 0]} receiveShadow>

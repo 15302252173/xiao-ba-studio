@@ -15,7 +15,7 @@ interface FilePreviewProps {
   workspace: string;
   path: string;
   name: string;
-  onClose: () => void;
+  on关闭: () => void;
 }
 
 function getFileExtension(filename: string): string {
@@ -125,7 +125,7 @@ function renderMarkdown(text: string): string {
   );
 }
 
-export function FilePreview({ workspace, path, name, onClose }: FilePreviewProps) {
+export function FilePreview({ workspace, path, name, on关闭 }: FilePreviewProps) {
   const [content, setContent] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -258,7 +258,7 @@ export function FilePreview({ workspace, path, name, onClose }: FilePreviewProps
               </>
             )}
             <button
-              onClick={onClose}
+              onClick={on关闭}
               className="p-2 rounded-lg transition-colors"
               style={{ color: "var(--text-secondary)" }}
               onMouseEnter={(e) => {

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import {
@@ -27,15 +27,15 @@ interface QuickAction {
 const ACTIONS: QuickAction[] = [
   {
     id: "heartbeat",
-    label: "Heartbeat Check",
-    description: "Check if all services are online and sites are reachable",
+    label: "心跳检测",
+    description: "检查所有服务是否在线、站点是否可达",
     icon: Heart,
     color: "var(--success)",
   },
   {
     id: "git-status",
-    label: "Git Status (All Repos)",
-    description: "Check uncommitted changes in all workspace repositories",
+    label: "Git 状态（全仓库）",
+    description: "检查所有工作区仓库的未提交变更",
     icon: GitBranch,
     color: "#60A5FA",
   },
@@ -48,24 +48,24 @@ const ACTIONS: QuickAction[] = [
   },
   {
     id: "restart-gateway",
-    label: "Restart Gateway",
-    description: "Restart the OpenClaw gateway service",
+    label: "重启网关",
+    description: "重启 OpenClaw 网关服务",
     icon: RotateCcw,
     color: "var(--warning, #f59e0b)",
     dangerous: true,
   },
   {
     id: "clear-temp",
-    label: "Clear Temp Files",
-    description: "Delete temporary files and trim PM2 logs",
+    label: "清理临时文件",
+    description: "删除临时文件并清理 PM2 日志",
     icon: Trash2,
     color: "var(--error)",
     dangerous: true,
   },
   {
     id: "npm-audit",
-    label: "NPM Security Audit",
-    description: "Check for security vulnerabilities in mission-control dependencies",
+    label: "NPM 安全审计",
+    description: "检查依赖中的安全漏洞",
     icon: Shield,
     color: "#4ADE80",
   },
@@ -120,10 +120,10 @@ export default function ActionsPage() {
           className="text-3xl font-bold mb-2"
           style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}
         >
-          Quick Actions
+          快捷操作
         </h1>
         <p style={{ color: "var(--text-secondary)" }}>
-          Run common maintenance and diagnostic tasks with one click
+          一键执行常用维护和诊断任务
         </p>
       </div>
 
@@ -178,7 +178,7 @@ export default function ActionsPage() {
                     <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
                   )}
                   <span className="flex-1 truncate">
-                    {result.status === "success" ? "Success" : "Failed"} · {result.duration_ms}ms
+                    {result.status === "Success" ? "成功" : "失败"} · {result.duration_ms}ms
                   </span>
                   <Clock className="w-3 h-3 flex-shrink-0" />
                   <span style={{ color: "var(--text-muted)" }}>
@@ -212,7 +212,7 @@ export default function ActionsPage() {
                 {isRunning ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    Running...
+                    执行中...
                   </>
                 ) : (
                   <>
@@ -227,12 +227,12 @@ export default function ActionsPage() {
         })}
       </div>
 
-      {/* Recent Results */}
+      {/* 最近结果 */}
       {Object.keys(results).length > 0 && (
         <div className="rounded-xl" style={{ backgroundColor: "var(--card)", border: "1px solid var(--border)" }}>
           <div className="p-4 border-b" style={{ borderColor: "var(--border)" }}>
             <h2 className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>
-              Recent Results
+              最近结果
             </h2>
           </div>
           <div className="divide-y" style={{ borderColor: "var(--border)" }}>
@@ -315,7 +315,7 @@ export default function ActionsPage() {
                 onClick={() => executeAction(confirmAction)}
                 style={{ padding: "0.5rem 1rem", borderRadius: "0.5rem", background: "var(--error, #ef4444)", color: "#fff", border: "none", cursor: "pointer", fontWeight: 600 }}
               >
-                Force Execute
+                强制执行
               </button>
             </div>
           </div>

@@ -39,7 +39,7 @@ interface AgentCostResult {
   outputTokens: number;
   cacheRead: number;
   cacheWrite: number;
-  percentOfTotal: number;
+  percentOf总计: number;
   messages: number;
 }
 
@@ -49,7 +49,7 @@ interface ModelCostResult {
   tokens: number;
   inputTokens: number;
   outputTokens: number;
-  percentOfTotal: number;
+  percentOf总计: number;
   messages: number;
 }
 
@@ -192,7 +192,7 @@ export async function buildCostReport(filterDays?: number) {
       outputTokens: v.out,
       cacheRead: v.cr,
       cacheWrite: v.cw,
-      percentOfTotal: totalAgentCost > 0 ? (v.cost / totalAgentCost) * 100 : 0,
+      percentOf总计: totalAgentCost > 0 ? (v.cost / totalAgentCost) * 100 : 0,
       messages: v.msgs,
     }))
     .sort((a, b) => b.cost - a.cost);
@@ -217,7 +217,7 @@ export async function buildCostReport(filterDays?: number) {
       tokens: v.tokens,
       inputTokens: v.in,
       outputTokens: v.out,
-      percentOfTotal: totalModelCost > 0 ? (v.cost / totalModelCost) * 100 : 0,
+      percentOf总计: totalModelCost > 0 ? (v.cost / totalModelCost) * 100 : 0,
       messages: v.msgs,
     }))
     .sort((a, b) => b.cost - a.cost);

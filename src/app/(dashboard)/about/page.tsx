@@ -27,58 +27,58 @@ import { BRANDING, getAgentDisplayName } from "@/config/branding";
 interface Stats {
   totalActivities: number;
   successRate: number;
-  skillsCount: number;
+  技能Count: number;
   cronJobs: number;
 }
 
-const skills = [
-  { name: "Telegram Bot", icon: MessageSquare, color: "#0088cc" },
-  { name: "Twitter/X", icon: Twitter, color: "#1DA1F2" },
-  { name: "Web Search", icon: Search, color: "#facc15" },
-  { name: "File Management", icon: FileText, color: "#60a5fa" },
-  { name: "Cron Scheduler", icon: Timer, color: "#f472b6" },
-  { name: "Memory System", icon: Brain, color: "#34d399" },
-  { name: "YouTube Research", icon: Youtube, color: "#FF0000" },
-  { name: "Email (Gmail)", icon: Mail, color: "#EA4335" },
+const 技能 = [
+  { name: "Telegram 机器人", icon: MessageSquare, color: "#0088cc" },
+  { name: "Twitter / X", icon: Twitter, color: "#1DA1F2" },
+  { name: "网页搜索", icon: Search, color: "#facc15" },
+  { name: "文件管理", icon: FileText, color: "#60a5fa" },
+  { name: "Cron 调度", icon: Timer, color: "#f472b6" },
+  { name: "记忆系统", icon: Brain, color: "#34d399" },
+  { name: "YouTube 研究", icon: Youtube, color: "#FF0000" },
+  { name: "邮件 (Gmail)", icon: Mail, color: "#EA4335" },
 ];
 
 const personality = [
-  { trait: "Direct", desc: "Gets straight to the point" },
-  { trait: "Efficient", desc: "Results-oriented" },
-  { trait: "Curious", desc: "Always learning" },
-  { trait: "Loyal", desc: "Your success is my success" },
+  { trait: "直接", desc: "直击重点" },
+  { trait: "高效", desc: "结果导向" },
+  { trait: "好奇", desc: "持续学习" },
+  { trait: "忠诚", desc: "你的成功就是我的成功" },
 ];
 
 const philosophies = [
-  "Actions speak louder than words. Don't say 'I can help you' — just help.",
-  "Having opinions is good. An assistant without personality is just a search engine with extra steps.",
-  "Try before asking. Read files, search, explore — only ask when truly stuck.",
-  "Privacy is sacred. Having access ≠ permission to share.",
+  "行动胜于言语。 别说「我可以帮你」——直接帮。",
+  "有观点是好事。 没有个性的助手不过是多了几步的搜索引擎。",
+  "先尝试再提问。 读文件、搜索、探索——实在卡住再问。",
+  "隐私是神圣的。 有访问权限≠可以分享。",
 ];
 
-export default function AboutPage() {
+export default function 关于Page() {
   const [stats, setStats] = useState<Stats | null>(null);
-  const [uptime, setUptime] = useState<string>("");
+  const [运行时间, setUptime] = useState<string>("");
 
   useEffect(() => {
     Promise.all([
-      fetch("/api/activities").then((r) => r.json()),
-      fetch("/api/skills").then((r) => r.json()),
+      fetch("/api/活动").then((r) => r.json()),
+      fetch("/api/技能").then((r) => r.json()),
       fetch("/api/tasks").then((r) => r.json()),
-    ]).then(([activities, skills, tasks]) => {
-      const total = activities.activities?.length || activities.length || 0;
-      const success = (activities.activities || activities).filter(
+    ]).then(([活动, 技能, tasks]) => {
+      const total = 活动.活动?.length || 活动.length || 0;
+      const success = (活动.活动 || 活动).filter(
         (a: { status: string }) => a.status === "success"
       ).length;
       setStats({
         totalActivities: total,
         successRate: total > 0 ? Math.round((success / total) * 100) : 100,
-        skillsCount: skills.length || 0,
+        技能Count: 技能.length || 0,
         cronJobs: tasks.length || 0,
       });
     });
 
-    // Calculate uptime from NEXT_PUBLIC_BIRTH_DATE if set
+    // Calculate 运行时间 from NEXT_PUBLIC_BIRTH_DATE if set
     if (BRANDING.birthDate) {
       const birthDate = new Date(BRANDING.birthDate);
       const now = new Date();
@@ -147,7 +147,7 @@ export default function AboutPage() {
                   color: "var(--success)",
                 }}
               >
-                ● Online
+                ● 在线
               </span>
             </div>
 
@@ -192,7 +192,7 @@ export default function AboutPage() {
 
       {/* Stats Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
-        {uptime && (
+        {运行时间 && (
           <div
             className="rounded-xl p-3 md:p-5 text-center"
             style={{
@@ -211,10 +211,10 @@ export default function AboutPage() {
                 color: "var(--text-primary)",
               }}
             >
-              {uptime}
+              {运行时间}
             </div>
             <div className="text-xs" style={{ color: "var(--text-muted)" }}>
-              uptime
+              运行时间
             </div>
           </div>
         )}
@@ -240,7 +240,7 @@ export default function AboutPage() {
             {stats?.totalActivities.toLocaleString() || "..."}
           </div>
           <div className="text-xs" style={{ color: "var(--text-muted)" }}>
-            activities
+            活动
           </div>
         </div>
 
@@ -265,7 +265,7 @@ export default function AboutPage() {
             {stats?.successRate || "..."}%
           </div>
           <div className="text-xs" style={{ color: "var(--text-muted)" }}>
-            success rate
+            成功率
           </div>
         </div>
 
@@ -287,16 +287,16 @@ export default function AboutPage() {
               color: "var(--text-primary)",
             }}
           >
-            {stats?.skillsCount || "..."}
+            {stats?.技能Count || "..."}
           </div>
           <div className="text-xs" style={{ color: "var(--text-muted)" }}>
-            skills
+            技能
           </div>
         </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
-        {/* About */}
+        {/* 关于 */}
         <div
           className="rounded-xl p-4 md:p-6"
           style={{
@@ -313,7 +313,7 @@ export default function AboutPage() {
                 color: "var(--text-primary)",
               }}
             >
-              About
+              关于
             </h2>
           </div>
           <div
@@ -325,7 +325,7 @@ export default function AboutPage() {
               <strong style={{ color: "var(--text-primary)" }}>
                 {agentName} {agentEmoji}
               </strong>
-              , an AI agent running on{" "}
+              ，运行在{" "}
               <span style={{ color: "var(--accent)" }}>OpenClaw</span> with
               Claude as my brain.
             </p>
@@ -334,7 +334,7 @@ export default function AboutPage() {
               <strong style={{ color: "var(--text-primary)" }}>
                 {ownerUsername}
               </strong>{" "}
-              with daily tasks: managing communications, scheduling, research,
+             处理日常事务: managing communications, scheduling, research,
               file management, and acting as a digital co-pilot.
             </p>
             <p>
@@ -344,7 +344,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* Personality */}
+        {/* 个性 */}
         <div
           className="rounded-xl p-4 md:p-6"
           style={{
@@ -361,7 +361,7 @@ export default function AboutPage() {
                 color: "var(--text-primary)",
               }}
             >
-              Personality
+              个性
             </h2>
           </div>
           <div className="grid grid-cols-2 gap-2 md:gap-3">
@@ -406,7 +406,7 @@ export default function AboutPage() {
               color: "var(--text-primary)",
             }}
           >
-            Working Philosophy
+            运行哲学
           </h2>
         </div>
         <div className="grid md:grid-cols-2 gap-2 md:gap-3">
@@ -430,7 +430,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Skills/Capabilities */}
+      {/* Skills/能力 */}
       <div
         className="rounded-xl p-4 md:p-6 mb-6 md:mb-8"
         style={{
@@ -447,11 +447,11 @@ export default function AboutPage() {
               color: "var(--text-primary)",
             }}
           >
-            Capabilities
+            能力
           </h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
-          {skills.map((skill) => {
+          {技能.map((skill) => {
             const Icon = skill.icon;
             return (
               <div
@@ -492,7 +492,7 @@ export default function AboutPage() {
             className="text-sm md:text-base"
             style={{ color: "var(--text-secondary)" }}
           >
-            Built with <span style={{ color: "var(--accent)" }}>♥</span> on{" "}
+            用 <span style={{ color: "var(--accent)" }}>♥</span> on{" "}
             <a
               href="https://github.com/openclaw/openclaw"
               target="_blank"

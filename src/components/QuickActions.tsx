@@ -115,7 +115,7 @@ export function QuickActions({ onActionComplete }: QuickActionsProps) {
       <div className="bg-gray-900 rounded-xl p-6">
         <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
           <RefreshCw className="w-5 h-5 text-emerald-400" />
-          Quick Actions
+          快捷操作
         </h2>
 
         {/* Notification */}
@@ -167,7 +167,7 @@ export function QuickActions({ onActionComplete }: QuickActionsProps) {
 
       <ChangePasswordModal
         isOpen={showPasswordModal}
-        onClose={() => setShowPasswordModal(false)}
+        on关闭={() => setShowPasswordModal(false)}
         onSuccess={() => {
           showNotification("success", "Password changed successfully");
           setShowPasswordModal(false);

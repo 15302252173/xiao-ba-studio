@@ -55,8 +55,8 @@ export default function AgentDesk({ agent, state, onClick, isSelected }: AgentDe
   };
 
   // Main agent gets special high-visibility colors
-  const deskColor = isMain ? '#8B0000' : '#8B4513';
-  const chairColor = isMain ? '#4A0000' : '#1f2937';
+  const deskColor = isMain ? '#5c3a21' : '#6b4a31';
+  const chairColor = isMain ? '#3a2010' : '#4a3828';
   const monitorBorderColor = isMain ? '#FF4444' : '#2d2d2d';
   const nameFontSize = isMain ? 0.22 : 0.15;
 

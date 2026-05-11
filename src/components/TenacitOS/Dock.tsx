@@ -14,22 +14,24 @@ import {
   Settings,
   Calendar,
   Share2,
+  FileText,
   Menu,
   X,
 } from "lucide-react";
 import { useState } from "react";
 
 const dockItems = [
-  { href: "/", label: "Dashboard", icon: Home },
-  { href: "/calendar", label: "Calendar", icon: Calendar },
-  { href: "/social", label: "Social Media", icon: Share2 },
-  { href: "/files", label: "Files", icon: FolderOpen },
-  { href: "/memory", label: "Reports", icon: Brain },
-  { href: "/office", label: "3D Office", icon: Building2 },
-  { href: "/cron", label: "Cron Jobs", icon: Clock },
-  { href: "/skills", label: "Skills", icon: Puzzle },
-  { href: "/costs", label: "Cost Analysis", icon: DollarSign },
-  { href: "/settings", label: "Settings", icon: Settings },
+  { href: "/", label: "仪表盘", icon: Home },
+  { href: "/reports", label: "日报", icon: FileText },
+  { href: "/calendar", label: "日历", icon: Calendar },
+  { href: "/social", label: "社交媒体", icon: Share2 },
+  { href: "/files", label: "文件", icon: FolderOpen },
+  { href: "/memory", label: "记忆", icon: Brain },
+  { href: "/office", label: "3D办公室", icon: Building2 },
+  { href: "/cron", label: "定时任务", icon: Clock },
+  { href: "/skills", label: "技能", icon: Puzzle },
+  { href: "/costs", label: "成本分析", icon: DollarSign },
+  { href: "/settings", label: "设置", icon: Settings },
 ];
 
 // Mobile: show top 5 in tab bar, rest in "more" drawer
@@ -43,7 +45,7 @@ export function Dock() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   // Check if current path is in "more" items
-  const isMoreActive = mobileMoreItems.some(
+  const isMore活跃 = mobileMoreItems.some(
     (item) => pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href))
   );
 
@@ -74,15 +76,15 @@ export function Dock() {
           }}
         >
           {mobileTabItems.map((item) => {
-            const isActive =
+            const is活跃 =
               pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
             const Icon = item.icon;
             const iconColor = isOffice
-              ? isActive ? "#FFFFFF" : "rgba(255,255,255,0.5)"
-              : isActive ? "var(--accent)" : "var(--text-secondary)";
+              ? is活跃 ? "#FFFFFF" : "rgba(255,255,255,0.5)"
+              : is活跃 ? "var(--accent)" : "var(--text-secondary)";
             const labelColor = isOffice
-              ? isActive ? "#FFFFFF" : "rgba(255,255,255,0.4)"
-              : isActive ? "var(--accent)" : "var(--text-muted)";
+              ? is活跃 ? "#FFFFFF" : "rgba(255,255,255,0.4)"
+              : is活跃 ? "var(--accent)" : "var(--text-muted)";
 
             return (
               <Link
@@ -101,8 +103,8 @@ export function Dock() {
                   borderRadius: "8px",
                 }}
               >
-                <Icon style={{ width: "22px", height: "22px", color: iconColor, strokeWidth: isActive ? 2.5 : 2 }} />
-                <span style={{ fontSize: "10px", fontWeight: isActive ? 600 : 500, color: labelColor }}>{item.label.split(" ")[0]}</span>
+                <Icon style={{ width: "22px", height: "22px", color: iconColor, strokeWidth: is活跃 ? 2.5 : 2 }} />
+                <span style={{ fontSize: "10px", fontWeight: is活跃 ? 600 : 500, color: labelColor }}>{item.label}</span>
               </Link>
             );
           })}
@@ -129,22 +131,22 @@ export function Dock() {
               style={{
                 width: "22px",
                 height: "22px",
-                color: isMoreActive
+                color: isMore活跃
                   ? (isOffice ? "#FFFFFF" : "var(--accent)")
                   : (isOffice ? "rgba(255,255,255,0.5)" : "var(--text-secondary)"),
-                strokeWidth: isMoreActive ? 2.5 : 2,
+                strokeWidth: isMore活跃 ? 2.5 : 2,
               }}
             />
             <span
               style={{
                 fontSize: "10px",
-                fontWeight: isMoreActive ? 600 : 500,
-                color: isMoreActive
+                fontWeight: isMore活跃 ? 600 : 500,
+                color: isMore活跃
                   ? (isOffice ? "#FFFFFF" : "var(--accent)")
                   : (isOffice ? "rgba(255,255,255,0.4)" : "var(--text-muted)"),
               }}
             >
-              More
+              更多
             </span>
           </button>
         </nav>
@@ -179,14 +181,14 @@ export function Dock() {
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-            <span style={{ fontFamily: "var(--font-heading)", fontSize: "16px", fontWeight: 700, color: "var(--text-primary)" }}>More</span>
+            <span style={{ fontFamily: "var(--font-heading)", fontSize: "16px", fontWeight: 700, color: "var(--text-primary)" }}>更多</span>
             <button onClick={() => setDrawerOpen(false)} style={{ background: "none", border: "none", cursor: "pointer", padding: "8px" }}>
               <X style={{ width: "20px", height: "20px", color: "var(--text-secondary)" }} />
             </button>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }}>
             {mobileMoreItems.map((item) => {
-              const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+              const is活跃 = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
               const Icon = item.icon;
               return (
                 <Link
@@ -201,13 +203,13 @@ export function Dock() {
                     gap: "6px",
                     padding: "16px 8px",
                     borderRadius: "12px",
-                    backgroundColor: isActive ? "var(--accent-soft)" : "var(--surface-elevated)",
+                    backgroundColor: is活跃 ? "var(--accent-soft)" : "var(--surface-elevated)",
                     textDecoration: "none",
                     minHeight: "44px",
                   }}
                 >
-                  <Icon style={{ width: "24px", height: "24px", color: isActive ? "var(--accent)" : "var(--text-secondary)" }} />
-                  <span style={{ fontSize: "11px", fontWeight: isActive ? 600 : 500, color: isActive ? "var(--accent)" : "var(--text-secondary)" }}>{item.label}</span>
+                  <Icon style={{ width: "24px", height: "24px", color: is活跃 ? "var(--accent)" : "var(--text-secondary)" }} />
+                  <span style={{ fontSize: "11px", fontWeight: is活跃 ? 600 : 500, color: is活跃 ? "var(--accent)" : "var(--text-secondary)" }}>{item.label}</span>
                 </Link>
               );
             })}
@@ -242,16 +244,16 @@ export function Dock() {
       }}
     >
       {dockItems.map((item) => {
-        const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+        const is活跃 = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
         const Icon = item.icon;
 
         const iconColor = isOffice
-          ? isActive ? "#FFFFFF" : "rgba(255,255,255,0.5)"
-          : isActive ? "var(--accent)" : "var(--text-secondary)";
+          ? is活跃 ? "#FFFFFF" : "rgba(255,255,255,0.5)"
+          : is活跃 ? "var(--accent)" : "var(--text-secondary)";
 
         const labelColor = isOffice
-          ? isActive ? "#FFFFFF" : "rgba(255,255,255,0.4)"
-          : isActive ? "var(--accent)" : "var(--text-muted)";
+          ? is活跃 ? "#FFFFFF" : "rgba(255,255,255,0.4)"
+          : is活跃 ? "var(--accent)" : "var(--text-muted)";
 
         const activeBg = isOffice
           ? "rgba(255, 255, 255, 0.1)"
@@ -275,18 +277,18 @@ export function Dock() {
               justifyContent: "center",
               gap: "4px",
               borderRadius: "8px",
-              backgroundColor: isActive ? activeBg : "transparent",
+              backgroundColor: is活跃 ? activeBg : "transparent",
               transition: "all 150ms ease",
               position: "relative",
               textDecoration: "none",
             }}
             onMouseEnter={(e) => {
-              if (!isActive) {
+              if (!is活跃) {
                 e.currentTarget.style.backgroundColor = hoverBg;
               }
             }}
             onMouseLeave={(e) => {
-              if (!isActive) {
+              if (!is活跃) {
                 e.currentTarget.style.backgroundColor = "transparent";
               }
             }}
@@ -296,7 +298,7 @@ export function Dock() {
                 width: "22px",
                 height: "22px",
                 color: iconColor,
-                strokeWidth: isActive ? 2.5 : 2,
+                strokeWidth: is活跃 ? 2.5 : 2,
               }}
             />
 
@@ -304,7 +306,7 @@ export function Dock() {
               style={{
                 fontFamily: "var(--font-body)",
                 fontSize: "9px",
-                fontWeight: isActive ? 600 : 500,
+                fontWeight: is活跃 ? 600 : 500,
                 color: labelColor,
                 textAlign: "center",
                 whiteSpace: "nowrap",

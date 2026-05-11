@@ -26,7 +26,7 @@ export interface AgentCost {
   tokens: number;
   inputTokens: number;
   outputTokens: number;
-  percentOfTotal: number;
+  percentOf总计: number;
 }
 
 export interface ModelCost {
@@ -35,7 +35,7 @@ export interface ModelCost {
   tokens: number;
   inputTokens: number;
   outputTokens: number;
-  percentOfTotal: number;
+  percentOf总计: number;
 }
 
 export interface DailyCost {
@@ -136,7 +136,7 @@ export function getCostByAgent(db: Database.Database, days: number = 30): AgentC
 
   return results.map((r) => ({
     ...r,
-    percentOfTotal: total > 0 ? (r.cost / total) * 100 : 0,
+    percentOf总计: total > 0 ? (r.cost / total) * 100 : 0,
   }));
 }
 
@@ -165,7 +165,7 @@ export function getCostByModel(db: Database.Database, days: number = 30): ModelC
 
   return results.map((r) => ({
     ...r,
-    percentOfTotal: total > 0 ? (r.cost / total) * 100 : 0,
+    percentOf总计: total > 0 ? (r.cost / total) * 100 : 0,
   }));
 }
 

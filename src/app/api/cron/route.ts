@@ -343,7 +343,7 @@ export async function PUT(request: NextRequest) {
     }
 
     if (typeof enabled !== "boolean" && typeof prompt !== "string") {
-      return NextResponse.json({ error: "Enabled flag or prompt is required" }, { status: 400 });
+      return NextResponse.json({ error: "已启用 flag or prompt is required" }, { status: 400 });
     }
 
     if (typeof prompt === "string") {

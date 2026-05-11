@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import {
@@ -18,9 +18,9 @@ type ViewMode = "list" | "timeline";
 type SortMode = "updated-desc" | "next-run-asc" | "last-run-desc";
 
 const SORT_LABELS: Record<SortMode, string> = {
-  "updated-desc": "Latest updated first",
-  "next-run-asc": "Next run soonest first",
-  "last-run-desc": "Last run most recent first",
+  "updated-desc": "最新更新优先",
+  "next-run-asc": "最早执行优先",
+  "last-run-desc": "最近执行优先",
 };
 
 function getSortableNumber(value?: number | null): number | null {
@@ -279,10 +279,10 @@ export default function CronJobsPage() {
                 fontFamily: "var(--font-heading)",
               }}
             >
-              Scheduled Tasks
+              定时任务
             </h1>
             <p className="text-sm md:text-base" style={{ color: "var(--text-secondary)" }}>
-              View tasks, next run times, recent results, and issues at a glance.
+              查看定时任务、下次运行时间、最近执行结果和问题一览。
             </p>
           </div>
 
@@ -422,8 +422,8 @@ export default function CronJobsPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-8">
-        <StatCard icon={<Clock className="w-6 h-6" />} value={jobs.length} label="Total Tasks" tone="info" />
-        <StatCard icon={<RefreshCw className="w-6 h-6" />} value={activeJobs} label="Enabled" tone="success" />
+        <StatCard icon={<Clock className="w-6 h-6" />} value={jobs.length} label="总计 Tasks" tone="info" />
+        <StatCard icon={<RefreshCw className="w-6 h-6" />} value={activeJobs} label="已启用" tone="success" />
         <StatCard icon={<Bug className="w-6 h-6" />} value={issueJobs} label="Recent Issues" tone="error" />
       </div>
 
@@ -467,7 +467,7 @@ export default function CronJobsPage() {
             onClick={() => setError(null)}
             style={{ marginLeft: "auto", color: "var(--error)", background: "none", border: "none", cursor: "pointer" }}
           >
-            Close
+            关闭
           </button>
         </div>
       )}
@@ -489,7 +489,7 @@ export default function CronJobsPage() {
         <div style={{ textAlign: "center", padding: "4rem 0" }}>
           <Clock className="w-8 h-8 mx-auto mb-4" style={{ color: "var(--text-muted)" }} />
           <h3 style={{ fontSize: "1.125rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "0.5rem" }}>
-            No Scheduled Tasks
+            No 定时任务
           </h3>
           <p style={{ color: "var(--text-secondary)" }}>Tasks will appear here once created via the OpenClaw CLI.</p>
         </div>
@@ -640,9 +640,9 @@ export default function CronJobsPage() {
           />
           {runToast.status === "success"
             ? runToast.skipped
-              ? `✓ "${runToast.name}" triggered successfully, today's scheduled run has been skipped`
-              : `✓ "${runToast.name}" triggered`
-            : `✗ "${runToast.name}" trigger failed`}
+              ? `✓ "${runToast.name}" 已触发，今日已排期的运行已跳过`
+              : `✓ "${runToast.name}" 已触发`
+            : `✗ "${runToast.name}" 触发失败`}
         </div>
       )}
 
