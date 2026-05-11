@@ -11,7 +11,7 @@ interface WallClockProps {
 
 /**
  * iPhone StandBy-style giant digital clock.
- * Floats in the sky behind the mountains, showing real-time PST.
+ * Floats in the sky behind the mountains, showing real-time China time.
  */
 export default function WallClock({
   position,
@@ -22,11 +22,8 @@ export default function WallClock({
   useEffect(() => {
     const update = () => {
       const now = new Date();
-      const pst = new Date(
-        now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })
-      );
-      const hours = pst.getHours() % 12 || 12;
-      const minutes = pst.getMinutes().toString().padStart(2, '0');
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
       setTime({ h: String(hours), mm: minutes });
     };
     update();
